@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJDevSec.Infrastructure", "KJDevSec.Infrastructure\KJDevSec.Infrastructure.csproj", "{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00-Infrastructure", "00-Infrastructure", "{17BB7ED6-8570-4BDF-96C6-B1557476E834}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KJDevSec.Infrastructure.Azure", "KJDevSec.Infrastructure.Azure\KJDevSec.Infrastructure.Azure.csproj", "{8849DA37-93FA-4209-B1AF-525A534C6106}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8849DA37-93FA-4209-B1AF-525A534C6106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8849DA37-93FA-4209-B1AF-525A534C6106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8849DA37-93FA-4209-B1AF-525A534C6106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8849DA37-93FA-4209-B1AF-525A534C6106}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
+		{8849DA37-93FA-4209-B1AF-525A534C6106} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KJDevSec.EventSourcing
+{
+    class NullSnapshotStore : ISnapshotStore
+    {
+        public Task<T> GetByIdAsync<T>(Guid id) where T : AggregateRoot
+        {
+            return Task.FromResult<T>(default(T));
+        }
+
+        public Task SaveAsync<T>(T item) where T : AggregateRoot
+        {
+            return Task.FromResult(0);
+        }
+    }
+}
