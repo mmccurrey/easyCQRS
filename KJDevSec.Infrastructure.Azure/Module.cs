@@ -1,6 +1,7 @@
 ﻿using KJDevSec.DI;
 using KJDevSec.EventSourcing;
 using KJDevSec.Extensibility;
+using KJDevSec.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,9 @@ namespace KJDevSec.Azure
 
         public void Up(IDependencyResolver resolver)
         {
-            resolver.Register(() => new EventSourcing.SQLEventSourcingContext());
-            resolver.Register<IEventStore, EventSourcing.SQLEventStore>();
+            resolver.Register(() => new InfrastructureContext());
+            resolver.Register<IBus, Messaging.Bus>();
+            resolver.Register<IEventStore, EventSourcing.EventStore>();
         }
     }
 }

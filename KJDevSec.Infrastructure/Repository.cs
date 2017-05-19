@@ -13,32 +13,17 @@ namespace KJDevSec
         private readonly IEventStore eventStore;
         private readonly ISnapshotStore snapshopStore;
         private readonly IBus bus;
-        private readonly HashSet<AggregateRoot> __aggregatesModified = new HashSet<AggregateRoot>();
+
+        private HashSet<AggregateRoot> __aggregatesModified = new HashSet<AggregateRoot>();
 
         public Repository(
             IEventStore eventStore,
             ISnapshotStore snapshopStore,
             IBus bus)
         {
-
-            if (eventStore == null)
-            {
-                throw new ArgumentNullException("eventStore");
-            }
-
-            if (snapshopStore == null)
-            {
-                throw new ArgumentNullException("snapshopStore");
-            }
-
-            if (bus == null)
-            {
-                throw new ArgumentNullException("bus");
-            }
-
-            this.eventStore = eventStore;
-            this.snapshopStore = snapshopStore;
-            this.bus = bus;
+            this.eventStore = eventStore ?? throw new ArgumentNullException("eventStore");
+            this.snapshopStore = snapshopStore ?? throw new ArgumentNullException("snapshopStore");
+            this.bus = bus ?? throw new ArgumentNullException("bus");
         }
 
         public async Task<T> GetByIdAsync<T>(Guid id) where T : AggregateRoot
@@ -93,14 +78,14 @@ namespace KJDevSec
                 this.eventStore.Save(@eventData.Item2, eventData.Item1);
             }
 
-            await this.eventStore.SaveChangesAsync()
-                                 .ContinueWith(_ => Task.WhenAll(@events.Select(e => bus.SendEventAsync(e.Item1)).ToArray()));
+            await eventStore.SaveChangesAsync();
+            await bus.PublishEventsAsync(events.Select(e => e.Item1).ToArray());            
 
-            var aggregates = this.__aggregatesModified.ToList();
+            var aggregates = __aggregatesModified.ToList();
             foreach (var aggregate in aggregates)
             {
                 aggregate.MarkChangesAsCommitted();
-                this.__aggregatesModified.Remove(aggregate);
+                __aggregatesModified.Remove(aggregate);
             }
         }
     }

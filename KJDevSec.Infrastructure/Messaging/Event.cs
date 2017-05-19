@@ -8,29 +8,32 @@ namespace KJDevSec.Messaging
 {
     public abstract class Event : IMessage
     {
-        public Guid EventId { get; protected set; }
-        public Guid AggregateId { get; protected set; }
-        public long Version { get; protected set; }
-        public DateTimeOffset Timestamp { get; protected set; }
-        public Guid? UserId { get; protected set; }
+        public Guid EventId { get; private set; }
+        public Guid CorrelationId { get; private set; }
+        public Guid AggregateId { get; private set; }
+        public long Version { get; private set; }
+        public DateTimeOffset Timestamp { get; private set; }
+        public Guid? ExecutedBy { get; private set; }
 
         protected Event() { }
-        public Event(Guid aggregateId, long version, Guid? userId, DateTimeOffset timestamp)
+
+        public Event(Guid correlationId, Guid aggregateId, long version, Guid? executedBy, DateTimeOffset timestamp)
         {            
             this.EventId = Guid.NewGuid();
+            this.CorrelationId = correlationId;
             this.Timestamp = timestamp;
             this.AggregateId = aggregateId;
             this.Version = version;
-            this.UserId = userId;
+            this.ExecutedBy = executedBy;
         }
 
-        public Event(Guid aggregateId, long version, Guid? userId): 
-            this(aggregateId, version, userId, DateTimeOffset.UtcNow)
+        public Event(Guid correlationId, Guid aggregateId, long version, Guid? executedBy): 
+            this(correlationId, aggregateId, version, executedBy, DateTimeOffset.UtcNow)
         {
         }
 
-        public Event(Guid aggregateId, long version) :
-            this(aggregateId, version, null, DateTimeOffset.UtcNow)
+        public Event(Guid correlationId, Guid aggregateId, long version) :
+            this(correlationId, aggregateId, version, null, DateTimeOffset.UtcNow)
         {
         }
     }

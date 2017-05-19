@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="AggregateRoot.cs" />
     <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\ISettingManager.cs" />
     <Compile Include="DI\IDependencyResolver.cs" />
     <Compile Include="DI\AutofactDependencyResolver.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
@@ -47,11 +48,13 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Messaging\XmlMessageSerializer.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\Event.cs" />
     <Compile Include="Messaging\IBus.cs" />
     <Compile Include="Messaging\IHandler.cs" />
     <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\IMessageSerializer.cs" />
     <Compile Include="Messaging\MemoryBus.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

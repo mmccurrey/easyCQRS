@@ -34,10 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommandEntity.cs" />
+    <Compile Include="EventEntity.cs" />
+    <Compile Include="Messaging\Bus.cs" />
     <Compile Include="Module.cs" />
-    <Compile Include="EventSourcing\SQLEvent.cs" />
-    <Compile Include="EventSourcing\SQLEventSourcingContext.cs" />
-    <Compile Include="EventSourcing\SQLEventStore.cs" />
+    <Compile Include="InfrastructureContext.cs" />
+    <Compile Include="EventSourcing\EventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

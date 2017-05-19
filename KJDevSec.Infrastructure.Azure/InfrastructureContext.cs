@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 
-namespace KJDevSec.Azure.EventSourcing
+namespace KJDevSec.Azure
 {
-    class SQLEventSourcingContext: DbContext
+    class InfrastructureContext: DbContext
     {
-        public DbSet<SQLEvent> Events { get; set; }
+        public DbSet<EventEntity> Events { get; set; }
+        public DbSet<CommandEntity> Commands { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,14 +20,6 @@ namespace KJDevSec.Azure.EventSourcing
 
                 base.OnConfiguring(optionsBuilder);
             }
-        }
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<SQLEvent>()
-                .ToTable("Events");
         }
     }
 }
