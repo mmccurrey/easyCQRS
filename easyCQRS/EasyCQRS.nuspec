@@ -6,12 +6,12 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://raw.githubusercontent.com/kellermanrivero/kjdevsec-infrastructure/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/kellermanrivero/kjdevsec-infrastructure</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/kellermanrivero/easycqrs/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/kellermanrivero/easycqrs</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>First Version.</releaseNotes>
+    <releaseNotes>A simplistic version of CQRS</releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>CQRS EventSourcing Infrastructure</tags>    
-  </metadata> 
+    <tags>CQRS EventSourcing</tags>
+  </metadata>
 </package>

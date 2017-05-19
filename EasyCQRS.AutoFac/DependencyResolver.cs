@@ -1,20 +1,22 @@
 ﻿using Autofac;
+using EasyCQRS.DI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
-namespace EasyCQRS.DI
-{    
-    class AutofactDependencyResolver : IDependencyResolver
+namespace EasyCQRS.AutoFac
+{
+    class AutoFacDependencyResolver : IDependencyResolver
     {
         private readonly ContainerBuilder builder;
         private IContainer container;
 
-        public AutofactDependencyResolver(ContainerBuilder container)
+        public AutoFacDependencyResolver(ContainerBuilder container)
         {
             this.builder = container;
             this.container = builder.Build();
-        }        
+        }
 
         public object Resolve(Type type)
         {
@@ -23,7 +25,7 @@ namespace EasyCQRS.DI
 
         public T Resolve<T>()
         {
-            return (T) this.Resolve(typeof(T));
+            return (T)this.Resolve(typeof(T));
         }
 
 
@@ -54,7 +56,7 @@ namespace EasyCQRS.DI
 
             UpdateContainer();
         }
-        
+
         public void Register<TImplementation>(Func<TImplementation> constructor)
         {
             builder.Register<TImplementation>((c) => constructor());
@@ -65,9 +67,9 @@ namespace EasyCQRS.DI
         void UpdateContainer()
         {
             //container = builder.Build();
-            #pragma warning disable 612, 618
+#pragma warning disable 612, 618
             builder.Update(container);
-            #pragma warning restore 612, 618
+#pragma warning restore 612, 618
         }
 
         IEnumerable<T> Convert<T>(IEnumerable source)

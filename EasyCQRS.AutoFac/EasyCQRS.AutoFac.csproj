@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8849DA37-93FA-4209-B1AF-525A534C6106}</ProjectGuid>
+    <ProjectGuid>{4159D39E-F229-45A2-B84E-22863BA6B9E3}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyCQRS.Azure</RootNamespace>
-    <AssemblyName>EasyCQRS.Azure</AssemblyName>
+    <RootNamespace>EasyCQRS.AutoFac</RootNamespace>
+    <AssemblyName>EasyCQRS.AutoFac</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>
@@ -34,34 +34,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommandEntity.cs" />
-    <Compile Include="EventEntity.cs" />
-    <Compile Include="Messaging\ServiceBus.cs" />
+    <None Include="project.json" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DependencyResolver.cs" />
     <Compile Include="Module.cs" />
-    <Compile Include="InfrastructureContext.cs" />
-    <Compile Include="EventSourcing\EventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SagaEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\easyCQRS\EasyCQRS.csproj">
-      <Project>{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}</Project>
+      <Project>{0382d8c3-435b-4d37-ba70-b4d95d4f7f9c}</Project>
       <Name>EasyCQRS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="temp\" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -14,16 +14,25 @@ namespace EasyCQRS
 {
     public static class Config
     {
+        private static IDependencyResolver resolver;
         private static List<IModule> Modules = new List<IModule>();
 
-        public static IDependencyResolver Container;
-        
-        static Config()
+        public static IDependencyResolver Container
         {
-            Container = new AutofactDependencyResolver(new Autofac.ContainerBuilder());
+            get
+            {
+                return resolver;
+            }
+            set
+            {
+                resolver = value;
 
-            RegisterDefaults();
-        }        
+                if(value != null)
+                {
+                    RegisterDefaults();
+                }
+            }
+        }     
 
         public static void Up(IModule module)
         {

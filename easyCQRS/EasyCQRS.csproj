@@ -8,8 +8,8 @@
     <ProjectGuid>{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KJDevSec</RootNamespace>
-    <AssemblyName>KJDevSec.Infrastructure</AssemblyName>
+    <RootNamespace>EasyCQRS</RootNamespace>
+    <AssemblyName>EasyCQRS</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\KJDevSec.Infrastructure.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\EasyCQRS.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AggregateRoot.cs" />
@@ -41,7 +41,6 @@
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />
     <Compile Include="DI\IDependencyResolver.cs" />
-    <Compile Include="DI\AutofactDependencyResolver.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
     <Compile Include="EventSourcing\ISagaSerializer.cs" />
     <Compile Include="EventSourcing\ISaga.cs" />
@@ -70,7 +69,11 @@
     <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EasyCQRS.nuspec" />
+    <None Include="EasyCQRS.0.1.0.nupkg" />
+    <None Include="EasyCQRS.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="pack.ps1" />
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

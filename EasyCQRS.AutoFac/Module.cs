@@ -5,15 +5,16 @@ using EasyCQRS.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
+using Autofac;
 
-namespace EasyCQRS.Azure
+namespace EasyCQRS.AutoFac
 {
-    public class Azure : IModule
+    public class AutoFact : IModule
     {
-        public string Name => "EasyCQRS.Azure";
+        public string Name => "EasyCQRS.AutoFac";
 
         public int Priority => Int32.MinValue;
 
@@ -21,9 +22,7 @@ namespace EasyCQRS.Azure
 
         public void Up(IDependencyResolver resolver)
         {
-            resolver.Register(() => new InfrastructureContext());
-            resolver.Register<IBus, Messaging.ServiceBus>();
-            resolver.Register<IEventStore, EventSourcing.EventStore>();
+            Config.Container = new AutoFacDependencyResolver(new ContainerBuilder());
         }
     }
 }
