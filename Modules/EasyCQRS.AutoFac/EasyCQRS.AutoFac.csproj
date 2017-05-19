@@ -43,7 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\easyCQRS\EasyCQRS.csproj">
+    <ProjectReference Include="..\..\Core\EasyCQRS\EasyCQRS.csproj">
       <Project>{0382d8c3-435b-4d37-ba70-b4d95d4f7f9c}</Project>
       <Name>EasyCQRS</Name>
     </ProjectReference>

@@ -44,7 +44,7 @@
     <Compile Include="SagaEntity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\easyCQRS\EasyCQRS.csproj">
+    <ProjectReference Include="..\..\Core\EasyCQRS\EasyCQRS.csproj">
       <Project>{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}</Project>
       <Name>EasyCQRS</Name>
     </ProjectReference>
