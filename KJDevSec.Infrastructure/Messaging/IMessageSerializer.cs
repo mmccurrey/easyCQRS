@@ -10,6 +10,6 @@ namespace KJDevSec.Messaging
     {
         byte[] Serialize<TMessage>(TMessage message) where TMessage : IMessage;
 
-        TMessage Deserialize<TMessage>(byte[] data) where TMessage : IMessage;
+        TMessage Deserialize<TMessage>(byte[] data) where TMessage : IMessage;        
     }
 }

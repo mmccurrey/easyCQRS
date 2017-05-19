@@ -12,22 +12,6 @@ namespace KJDevSec.Azure
     [Table("Events")]
     internal class EventEntity
     {
-        private Event @event; 
-
-        public EventEntity() { }
-        public EventEntity(string aggregateType, Event @event)
-        {
-            this.AggregateId = @event.AggregateId;
-            this.CorrelationId = @event.CorrelationId;
-            this.Version = @event.Version;
-            this.SourceType = aggregateType;
-            this.Payload = Config.MessageSerializer.Serialize(@event);
-            this.Date = DateTimeOffset.UtcNow;
-            this.Type = @event.GetType().FullName;
-
-            this.@event = @event;
-        }
-
         [Key, Column(Order = 2)]
         public Guid AggregateId { get; set; }
 
@@ -44,18 +28,5 @@ namespace KJDevSec.Azure
 
         [MaxLength(Int32.MaxValue)]
         public byte[] Payload { get; set; }
-
-        public Event Event
-        {
-            get
-            {
-                if(@event == null)
-                {
-                    @event = Config.MessageSerializer.Deserialize<Event>(Payload);
-                }
-
-                return @event;
-            }
-        }
     }
 }

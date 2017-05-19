@@ -17,15 +17,12 @@ namespace KJDevSec
         private static List<IModule> Modules = new List<IModule>();
 
         public static IDependencyResolver Container;
-
-        public static IMessageSerializer MessageSerializer;
-
-        public static ISettingManager SettingManager;
-
+        
         static Config()
         {
             Container = new AutofactDependencyResolver(new Autofac.ContainerBuilder());
-            MessageSerializer = new XmlMessageSerializer();
+
+            RegisterDefaults();
         }        
 
         public static void Up(IModule module)
@@ -34,10 +31,13 @@ namespace KJDevSec
             Modules.Add(module);
         }
 
-        public static string GetSetting(string name)
+        private static void RegisterDefaults()
         {
-            return SettingManager.GetSetting(name);
+            Container.Register<IBus, MemoryBus>();
+            Container.Register<IRepository, Repository>();
+            Container.Register<IMessageSerializer, XmlMessageSerializer>();
+            Container.Register<EventSourcing.ISnapshotStore, EventSourcing.NullSnapshotStore>();
+            Container.Register<Diagnostics.ILogger, Diagnostics.ConsoleLogger>();
         }
-        
     }
 }

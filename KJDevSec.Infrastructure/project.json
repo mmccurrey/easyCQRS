@@ -4,6 +4,8 @@
     "Autofac": "4.2.1",
     "Autofac.Extensions.DependencyInjection": "4.0.0",
     "Microsoft.CSharp": "4.3.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Diagnostics.Tracing": "4.3.0",
     "System.Dynamic.Runtime": "4.3.0",
     "System.Globalization": "4.3.0",
     "System.Globalization.Extensions": "4.3.0",

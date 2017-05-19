@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KJDevSec.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,12 +10,20 @@ namespace KJDevSec.Messaging
 {
     class MemoryBus : IBus
     {
+        private readonly ILogger logger;
+
+        public MemoryBus(ILogger logger)
+        {
+            this.logger = logger ?? throw new ArgumentNullException("logger");
+        }
+
         public Task PublishEventsAsync(params Event[] events)
         {
             if (@events != null)
             {
                 foreach (var @event in events)
                 {
+                    logger.Info("[MemoryBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
                     SendMessage(@event);
                 }
             }
@@ -24,6 +33,7 @@ namespace KJDevSec.Messaging
 
         public Task SendCommandAsync<T>(T command) where T : Command
         {
+            logger.Info("[MemoryBus->SendCommandAsync] Sending command of type: {0}", typeof(T).Name);
             return SendMessage(command);
         }
 

@@ -36,11 +36,12 @@
   <ItemGroup>
     <Compile Include="CommandEntity.cs" />
     <Compile Include="EventEntity.cs" />
-    <Compile Include="Messaging\Bus.cs" />
+    <Compile Include="Messaging\ServiceBus.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="InfrastructureContext.cs" />
     <Compile Include="EventSourcing\EventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SagaEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KJDevSec.Infrastructure\KJDevSec.Infrastructure.csproj">

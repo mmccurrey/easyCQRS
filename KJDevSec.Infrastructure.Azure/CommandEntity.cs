@@ -10,24 +10,13 @@ namespace KJDevSec.Azure
 {
     [Table("Commands")]
     public class CommandEntity
-    {
-        public CommandEntity(Command command)
-        {
-            this.Id = command.CommandId;
-            this.CorrelationId = command.CorrelationId;
-            this.ExecutedBy = command.ExecutedBy;
-            this.ScheduledAt = DateTimeOffset.UtcNow;
-            this.Executed = false;
-            this.Success = false;
-            this.Payload = Config.MessageSerializer.Serialize(command);
-            this.ErrorDescription = string.Empty;
-        }
-
+    {        
         public Guid Id { get; set; }
         public Guid CorrelationId { get; set; }
         public Guid? ExecutedBy { get; set; }
         public DateTimeOffset ScheduledAt { get; set; }
         public DateTimeOffset? ExecutedAt { get; set; }
+        public string Type { get; set; }
         public bool Executed { get; set; }
         public bool Success { get; set; }
 

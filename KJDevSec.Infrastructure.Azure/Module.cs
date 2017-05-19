@@ -21,7 +21,7 @@ namespace KJDevSec.Azure
         public void Up(IDependencyResolver resolver)
         {
             resolver.Register(() => new InfrastructureContext());
-            resolver.Register<IBus, Messaging.Bus>();
+            resolver.Register<IBus, Messaging.ServiceBus>();
             resolver.Register<IEventStore, EventSourcing.EventStore>();
         }
     }
