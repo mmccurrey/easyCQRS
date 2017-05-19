@@ -1,12 +1,12 @@
-﻿using KJDevSec.EventSourcing;
-using KJDevSec.Messaging;
+﻿using EasyCQRS.EventSourcing;
+using EasyCQRS.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Azure.EventSourcing
+namespace EasyCQRS.Azure.EventSourcing
 {
     class EventStore: IEventStore
     {

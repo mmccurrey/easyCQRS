@@ -1,4 +1,4 @@
-﻿namespace KJDevSec
+﻿namespace EasyCQRS
 {
     public interface ISettingManager
     {

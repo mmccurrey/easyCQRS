@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.EventSourcing
+namespace EasyCQRS.EventSourcing
 {
     public interface ISagaStore
     {

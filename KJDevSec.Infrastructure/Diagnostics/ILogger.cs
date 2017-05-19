@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Diagnostics
+namespace EasyCQRS.Diagnostics
 {
     public interface ILogger
     {

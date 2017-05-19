@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace KJDevSec.DI
+namespace EasyCQRS.DI
 {    
     class AutofactDependencyResolver : IDependencyResolver
     {

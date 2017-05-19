@@ -1,5 +1,5 @@
-﻿using KJDevSec.Diagnostics;
-using KJDevSec.Messaging;
+﻿using EasyCQRS.Diagnostics;
+using EasyCQRS.Messaging;
 using Microsoft.Azure.ServiceBus;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Azure.Messaging
+namespace EasyCQRS.Azure.Messaging
 {
     class ServiceBus : IBus
     {

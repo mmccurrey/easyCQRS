@@ -44,9 +44,9 @@
     <Compile Include="SagaEntity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KJDevSec.Infrastructure\KJDevSec.Infrastructure.csproj">
+    <ProjectReference Include="..\KJDevSec.Infrastructure\EasyCQRS.csproj">
       <Project>{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}</Project>
-      <Name>KJDevSec.Infrastructure</Name>
+      <Name>EasyCQRS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

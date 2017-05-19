@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec
+namespace EasyCQRS
 {
     public static class AssemblyExtensions
     {

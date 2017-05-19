@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KJDevSec
+namespace EasyCQRS
 {
     public class Contact
     {

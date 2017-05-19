@@ -1,14 +1,14 @@
-﻿using KJDevSec.DI;
-using KJDevSec.EventSourcing;
-using KJDevSec.Extensibility;
-using KJDevSec.Messaging;
+﻿using EasyCQRS.DI;
+using EasyCQRS.EventSourcing;
+using EasyCQRS.Extensibility;
+using EasyCQRS.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Azure
+namespace EasyCQRS.Azure
 {
     public class Azure : IModule
     {

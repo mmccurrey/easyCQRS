@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Azure
+namespace EasyCQRS.Azure
 {
     [Table("Sagas")]
     internal class SagaEntity

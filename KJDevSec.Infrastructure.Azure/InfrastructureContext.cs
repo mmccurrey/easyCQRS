@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 
-namespace KJDevSec.Azure
+namespace EasyCQRS.Azure
 {
     class InfrastructureContext: DbContext
     {

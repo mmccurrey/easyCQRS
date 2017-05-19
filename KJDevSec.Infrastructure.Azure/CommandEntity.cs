@@ -1,4 +1,4 @@
-﻿using KJDevSec.Messaging;
+﻿using EasyCQRS.Messaging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec.Azure
+namespace EasyCQRS.Azure
 {
     [Table("Commands")]
     public class CommandEntity

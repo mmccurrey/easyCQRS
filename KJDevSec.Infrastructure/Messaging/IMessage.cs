@@ -1,4 +1,4 @@
-﻿namespace KJDevSec.Messaging
+﻿namespace EasyCQRS.Messaging
 {
     public interface IMessage
     {

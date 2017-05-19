@@ -1,13 +1,13 @@
-﻿using KJDevSec.Diagnostics;
-using KJDevSec.EventSourcing;
-using KJDevSec.Messaging;
+﻿using EasyCQRS.Diagnostics;
+using EasyCQRS.EventSourcing;
+using EasyCQRS.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec
+namespace EasyCQRS
 {
     class Repository : IRepository, IAggregateReader
     {

@@ -1,6 +1,6 @@
-﻿using KJDevSec.DI;
-using KJDevSec.Extensibility;
-using KJDevSec.Messaging;
+﻿using EasyCQRS.DI;
+using EasyCQRS.Extensibility;
+using EasyCQRS.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KJDevSec
+namespace EasyCQRS
 {
     public static class Config
     {
