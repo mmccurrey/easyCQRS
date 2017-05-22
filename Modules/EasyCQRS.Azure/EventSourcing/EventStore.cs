@@ -96,8 +96,8 @@ namespace EasyCQRS.Azure.EventSourcing
 
             var entity = new EventEntity
             {
-                AggregateId = @event.EventId,
-                CorrelationId = @event.CorrelationId,
+                AggregateId = @event.AggregateId,
+                CorrelationId = @event.CorrelationId,                
                 Version = @event.Version,
                 Date = @event.Timestamp,
                 SourceType = aggregateTypeName,

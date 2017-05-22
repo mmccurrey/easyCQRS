@@ -11,7 +11,7 @@ namespace EasyCQRS.Azure
 {   
     [Table("Events")]
     internal class EventEntity
-    {
+    {        
         [Key, Column(Order = 2)]
         public Guid AggregateId { get; set; }
 
