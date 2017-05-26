@@ -12,41 +12,67 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS
 {
-    public static class Config
-    {
-        private static IDependencyResolver resolver;
-        private static List<IModule> Modules = new List<IModule>();
+    public class Config
+    {        
+        private IDependencyResolver resolver;
+        private ICollection<IModule> Modules = new List<IModule>();
 
-        public static IDependencyResolver Container
+        public IDependencyResolver Container { get; private set; }       
+        public Dictionary<Type, Type> Services { get; private set; }
+
+        public Config()
         {
-            get
-            {
-                return resolver;
-            }
-            set
-            {
-                resolver = value;
+            RegisterDefaultServices();
+            RegisterIoCContainer();
+        }
 
-                if(value != null)
-                {
-                    RegisterDefaults();
-                }
-            }
-        }     
-
-        public static void Up(IModule module)
+        public void Up(IModule module)
         {
-            module.Up(Container);
+            module.Up(this);
             Modules.Add(module);
         }
 
-        private static void RegisterDefaults()
+        public void ReplaceIoCContainer(IDependencyResolver dependencyResolver)
         {
-            Container.Register<IBus, MemoryBus>();
-            Container.Register<IRepository, Repository>();
-            Container.Register<IMessageSerializer, XmlMessageSerializer>();
-            Container.Register<EventSourcing.ISnapshotStore, EventSourcing.NullSnapshotStore>();
-            Container.Register<Diagnostics.ILogger, Diagnostics.ConsoleLogger>();
+            if(dependencyResolver == null)
+            {
+                throw new ArgumentNullException("dependencyResolver");
+            }
+
+            if(Container != dependencyResolver)
+            {
+                RegisterIoCContainer(dependencyResolver);
+            }
+        }
+
+        void RegisterDefaultServices()
+        {
+            if(this.Services == null)
+            {
+                this.Services = new Dictionary<Type, Type>();
+            }
+
+            RegisterService<IBus, MemoryBus>();
+            RegisterService<IRepository, Repository>();
+            RegisterService<IMessageSerializer, XmlMessageSerializer>();
+            RegisterService<EventSourcing.ISnapshotStore, EventSourcing.NullSnapshotStore>();
+            RegisterService<Diagnostics.ILogger, Diagnostics.ConsoleLogger>();
+        }
+
+        void RegisterService<TInterface, TImplementation>() where TImplementation : TInterface
+        {
+            this.Services.Add(typeof(TInterface), typeof(TImplementation));
+        }
+
+        void RegisterIoCContainer(IDependencyResolver dependencyResolver = null)
+        {
+            Container = dependencyResolver ?? new DefaultDependencyResolver();
+            Container.Register(() => Container);
+
+            foreach(var service in Services)
+            {
+                Container.Register(service.Key, service.Value);
+            }
         }
     }
 }

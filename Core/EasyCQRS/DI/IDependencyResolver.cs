@@ -10,6 +10,7 @@ namespace EasyCQRS.DI
         IEnumerable<T> ResolveAll<T>();
         IEnumerable<object> ResolveAll(Type type);
 
+        void Register(Type type, Type concreteType);
         void Register<TInterface, TImplementation>() where TImplementation : TInterface;
         void Register<TInterface, TImplementation>(Func<TImplementation> constructor) where TImplementation : TInterface;
         void Register<TImplementation>(Func<TImplementation> constructor);

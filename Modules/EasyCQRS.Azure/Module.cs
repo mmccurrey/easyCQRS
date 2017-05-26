@@ -19,11 +19,11 @@ namespace EasyCQRS.Azure
 
         public string Version => GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyVersionAttribute>().Version;
 
-        public void Up(IDependencyResolver resolver)
+        public void Up(Config config)
         {
-            resolver.Register(() => new InfrastructureContext());
-            resolver.Register<IBus, Messaging.ServiceBus>();
-            resolver.Register<IEventStore, EventSourcing.EventStore>();
+            config.Container.Register(() => new InfrastructureContext());
+            config.Container.Register<IBus, Messaging.ServiceBus>();
+            config.Container.Register<IEventStore, EventSourcing.EventStore>();
         }
     }
 }

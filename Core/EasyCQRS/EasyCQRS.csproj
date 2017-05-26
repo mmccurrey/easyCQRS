@@ -40,6 +40,8 @@
     <Compile Include="Config\ISettingManager.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />
+    <Compile Include="DI\DefaultDependencyResolver.cs" />
+    <Compile Include="DI\DependencyInfo.cs" />
     <Compile Include="DI\IDependencyResolver.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
     <Compile Include="EventSourcing\ISagaSerializer.cs" />

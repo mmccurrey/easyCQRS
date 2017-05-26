@@ -7,11 +7,11 @@
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
     "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-    "NETStandard.Library": "1.6.1",
+    "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "10.0.2",
     "System.Xml.XmlSerializer": "4.3.0"
   },
   "frameworks": {
-    "netstandard1.5": {}
+    "netstandard1.6": {}
   }
 }

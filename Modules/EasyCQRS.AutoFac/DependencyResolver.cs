@@ -42,6 +42,12 @@ namespace EasyCQRS.AutoFac
             return Convert<object>((IEnumerable)container.Resolve(gt));
         }
 
+        public void Register(Type sourceType, Type targetType)
+        {
+            builder.RegisterType(targetType).As(sourceType);
+
+            UpdateContainer();
+        }
 
         public void Register<TInterface, TImplementation>() where TImplementation : TInterface
         {

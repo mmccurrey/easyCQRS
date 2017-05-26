@@ -20,9 +20,9 @@ namespace EasyCQRS.AutoFac
 
         public string Version => GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyVersionAttribute>().Version;
 
-        public void Up(IDependencyResolver resolver)
+        public void Up(Config config)
         {
-            Config.Container = new AutoFacDependencyResolver(new ContainerBuilder());
+            config.ReplaceIoCContainer(new AutoFacDependencyResolver(new ContainerBuilder()));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EasyCQRS.Diagnostics;
+﻿using EasyCQRS.DI;
+using EasyCQRS.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace EasyCQRS.Messaging
 {
     class MemoryBus : IBus
     {
+        private readonly IDependencyResolver container;
         private readonly ILogger logger;
 
-        public MemoryBus(ILogger logger)
+        public MemoryBus(IDependencyResolver container, ILogger logger)
         {
+            this.container = container ?? throw new ArgumentNullException("container");
             this.logger = logger ?? throw new ArgumentNullException("logger");
         }
 
@@ -39,7 +42,8 @@ namespace EasyCQRS.Messaging
 
         private Task SendMessage<T>(T message) where T : IMessage
         {
-            var handlers = Config.Container.ResolveAll(typeof(IHandler<>).MakeGenericType(message.GetType())).ToList();
+            var handlerType = typeof(IHandler<>).MakeGenericType(message.GetType());
+            var handlers = container.ResolveAll(handlerType);
 
             if (typeof(Event).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo()))
             {

@@ -12,6 +12,6 @@ namespace EasyCQRS.Extensibility
         string Name { get; }
         string Version { get; }
         int Priority { get; }
-        void Up(IDependencyResolver resolver);
+        void Up(Config config);
     }
 }
