@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AggregateRoot.cs" />
+    <Compile Include="ConfigExtensions.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ISettingManager.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
