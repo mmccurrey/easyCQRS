@@ -40,6 +40,7 @@
     <Compile Include="Config\ISettingManager.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />
+    <Compile Include="Diagnostics\NullConsoleLogger.cs" />
     <Compile Include="DI\DefaultDependencyResolver.cs" />
     <Compile Include="DI\DependencyInfo.cs" />
     <Compile Include="DI\IDependencyResolver.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="IAggregateReader.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Messaging\XmlMessageSerializer.cs" />
+    <Compile Include="Messaging\JsonMessageSerializer.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\Event.cs" />
     <Compile Include="Messaging\IBus.cs" />

@@ -4,6 +4,8 @@
     "Microsoft.CSharp": "4.3.0",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "10.0.2",
+    "ReflectionMagic": "3.0.0",
     "System.Diagnostics.Tracing": "4.3.0",
     "System.Dynamic.Runtime": "4.3.0",
     "System.Globalization": "4.3.0",

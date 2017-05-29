@@ -17,14 +17,19 @@ namespace EasyCQRS.Messaging
 
         protected Event() { }
 
-        public Event(Guid correlationId, Guid aggregateId, long version, Guid? executedBy, DateTimeOffset timestamp)
-        {            
-            this.EventId = Guid.NewGuid();
+        public Event(Guid eventId, Guid correlationId, Guid aggregateId, long version, Guid? executedBy, DateTimeOffset timestamp)
+        {
+            this.EventId = eventId;
             this.CorrelationId = correlationId;
             this.Timestamp = timestamp;
             this.AggregateId = aggregateId;
             this.Version = version;
             this.ExecutedBy = executedBy;
+        }
+
+        public Event(Guid correlationId, Guid aggregateId, long version, Guid? executedBy, DateTimeOffset timestamp)
+            : this(Guid.NewGuid(), correlationId, aggregateId, version, executedBy, timestamp)
+        {     
         }
 
         public Event(Guid correlationId, Guid aggregateId, long version, Guid? executedBy): 

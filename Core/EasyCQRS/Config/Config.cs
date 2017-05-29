@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS
 {
-    public class Config
+    public class Config        
     {        
-        private IDependencyResolver resolver;
         private ICollection<IModule> Modules = new List<IModule>();
 
         public IDependencyResolver Container { get; private set; }       
@@ -54,9 +53,9 @@ namespace EasyCQRS
 
             RegisterService<IBus, MemoryBus>();
             RegisterService<IRepository, Repository>();
-            RegisterService<IMessageSerializer, XmlMessageSerializer>();
+            RegisterService<IMessageSerializer, JsonMessageSerializer>();
             RegisterService<EventSourcing.ISnapshotStore, EventSourcing.NullSnapshotStore>();
-            RegisterService<Diagnostics.ILogger, Diagnostics.ConsoleLogger>();
+            RegisterService<Diagnostics.ILogger, Diagnostics.NullConsoleLogger>();
         }
 
         void RegisterService<TInterface, TImplementation>() where TImplementation : TInterface
@@ -67,6 +66,7 @@ namespace EasyCQRS
         void RegisterIoCContainer(IDependencyResolver dependencyResolver = null)
         {
             Container = dependencyResolver ?? new DefaultDependencyResolver();
+            Container.Register(() => this);
             Container.Register(() => Container);
 
             foreach(var service in Services)

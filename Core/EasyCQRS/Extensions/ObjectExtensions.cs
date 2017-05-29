@@ -10,9 +10,7 @@ namespace EasyCQRS
     {
         public static dynamic AsDynamic(this object o)
         {
-            dynamic x = o;
-
-            return x;
+            return ReflectionMagic.PrivateReflectionUsingDynamicExtensions.AsDynamic(o);
         }
     }
 }

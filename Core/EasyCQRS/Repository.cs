@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS
 {
-    class Repository : IRepository, IAggregateReader
+    internal class Repository : IRepository, IAggregateReader
     {
         private readonly IEventStore eventStore;
         private readonly ISnapshotStore snapshopStore;
