@@ -1,5 +1,6 @@
 ﻿using EasyCQRS.Diagnostics;
 using EasyCQRS.Messaging;
+using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
 using System;
 using System.Collections.Generic;
@@ -11,27 +12,30 @@ namespace EasyCQRS.Azure.Messaging
 {
     class ServiceBus : IBus
     {
+        private readonly ServiceBusManagementClient serviceBusManagementClient;
         private readonly IMessageSerializer messageSerializer;
-        private readonly ISettingManager settingsManager;
+        private readonly IConfigurationManager configurationManager;
         private readonly ILogger logger;
 
         private readonly QueueClient commandsQueueClient;
-        private readonly QueueClient eventsQueueClient;
+        private readonly TopicClient eventsTopicClient;
         private readonly InfrastructureContext db;
 
         public ServiceBus(            
+            ServiceBusManagementClient serviceBusManagementClient,
             IMessageSerializer messageSerializer,
-            ISettingManager settingsManager, 
-            ILogger logger,
+            IConfigurationManager configurationManager, 
+            ILogger logger, 
             InfrastructureContext db)
         {
+            this.serviceBusManagementClient = serviceBusManagementClient ?? throw new ArgumentNullException("serviceBusManagementClient");
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
-            this.settingsManager = settingsManager ?? throw new ArgumentNullException("settingsManager");
+            this.configurationManager = configurationManager ?? throw new ArgumentNullException("settingsManager");
             this.logger = logger ?? throw new ArgumentNullException("logger");
-
             this.db = db ?? throw new ArgumentNullException("db");
-            this.commandsQueueClient = GetQueueClient("machete-commands");
-            this.eventsQueueClient = GetQueueClient("machete-events");
+
+            this.commandsQueueClient = ServiceBusHelper.GetCommandsQueueClient(configurationManager);
+            this.eventsTopicClient = ServiceBusHelper.GetEventsTopicClient(configurationManager, serviceBusManagementClient);
         }
 
         public async Task SendCommandAsync<T>(T command) where T : Command
@@ -50,11 +54,21 @@ namespace EasyCQRS.Azure.Messaging
 
             db.Commands.Add(entity);
 
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             try
-            {               
-                await SendMessage(command, commandsQueueClient);
+            {
+                var payload = messageSerializer.Serialize(command);
+                var brokeredMessage = new Message(payload);
+
+                brokeredMessage.UserProperties["CorrelationId"] = command.CorrelationId;
+                brokeredMessage.UserProperties["Name"] = command.GetType().Name;
+                brokeredMessage.UserProperties["FullName"] = command.GetType().FullName;
+                brokeredMessage.UserProperties["Namespace"] = command.GetType().Namespace;
+                brokeredMessage.UserProperties["Type"] = command.GetType().AssemblyQualifiedName;
+                brokeredMessage.UserProperties["Command"] = true;                 
+
+                await commandsQueueClient.SendAsync(brokeredMessage);
 
                 entity.Success = true;
             }
@@ -80,29 +94,24 @@ namespace EasyCQRS.Azure.Messaging
                 foreach(var @event in events)
                 {
                     logger.Info("[ServiceBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
-                    tasks.Add(SendMessage(@event, eventsQueueClient));
+
+                    var payload = messageSerializer.Serialize(@event);
+                    var brokeredMessage = new Message(payload);
+
+                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;                   
+                    brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
+                    brokeredMessage.UserProperties["FullName"] = @event.GetType().FullName;
+                    brokeredMessage.UserProperties["Namespace"] = @event.GetType().Namespace;
+                    brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
+                    brokeredMessage.UserProperties["Event"] = true;
+
+                    tasks.Add(eventsTopicClient.SendAsync(brokeredMessage));
                 }
             }
 
             return Task.WhenAll(tasks);
         }
 
-        async Task SendMessage(IMessage message, QueueClient queueClient)
-        {
-            var payload = messageSerializer.Serialize(message);
-            var brokeredMessage = new Message(payload);
-
-            brokeredMessage.UserProperties["Type"] = message.GetType().AssemblyQualifiedName;
-
-            await queueClient.SendAsync(brokeredMessage);
-        }
-
-        QueueClient GetQueueClient(string queueName)
-        {
-            string connectionString = settingsManager.GetSetting("Bus");
-
-            // Initialize the connection to Service Bus Queue
-            return new QueueClient(connectionString, queueName);
-        }
+        
     }
 }

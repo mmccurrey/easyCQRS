@@ -1,6 +1,7 @@
 ﻿{
   "supports": {},
   "dependencies": {
+    "Microsoft.Azure.Management.ServiceBus.Fluent": "1.0.0",
     "Microsoft.Azure.ServiceBus": "0.0.5-preview",
     "Microsoft.CSharp": "4.3.0",
     "Microsoft.EntityFrameworkCore": "1.1.0",
@@ -9,6 +10,7 @@
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "10.0.2",
+    "System.Net.Http": "4.3.2",
     "System.Xml.XmlSerializer": "4.3.0"
   },
   "frameworks": {

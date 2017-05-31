@@ -38,7 +38,7 @@
     <Compile Include="AggregateRoot.cs" />
     <Compile Include="ConfigExtensions.cs" />
     <Compile Include="Config\Config.cs" />
-    <Compile Include="Config\ISettingManager.cs" />
+    <Compile Include="Config\IConfigurationManager.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />
     <Compile Include="Diagnostics\NullConsoleLogger.cs" />
@@ -57,6 +57,7 @@
     <Compile Include="IAggregateReader.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Messaging\IEventSubscriber.cs" />
     <Compile Include="Messaging\JsonMessageSerializer.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\Event.cs" />

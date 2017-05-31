@@ -36,7 +36,11 @@
   <ItemGroup>
     <Compile Include="CommandEntity.cs" />
     <Compile Include="EventEntity.cs" />
+    <Compile Include="EventSourcing\SagaStore.cs" />
+    <Compile Include="Messaging\IEventSubscription.cs" />
+    <Compile Include="Messaging\ServiceBusEventSubscription.cs" />
     <Compile Include="Messaging\ServiceBus.cs" />
+    <Compile Include="Messaging\ServiceBusHelper.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="InfrastructureContext.cs" />
     <Compile Include="EventSourcing\EventStore.cs" />
@@ -53,9 +57,7 @@
     <None Include="App.config" />
     <None Include="project.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="temp\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -23,7 +23,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public async Task<IEnumerable<Event>> LoadAsync<T>(Guid sourceId) where T : AggregateRoot
         {
-            var type = typeof(T).Name;
+            var type = typeof(T).FullName;
             var events = await this.db.Events.Where(e => e.AggregateId == sourceId && e.SourceType == type).ToListAsync();
 
             if (events != null)
@@ -36,7 +36,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public async Task<IEnumerable<Event>> LoadAsync<T>(Guid sourceId, long lastKnownVersion) where T : AggregateRoot
         {
-            var type = typeof(T).Name;
+            var type = typeof(T).FullName;
             var events = await this.db.Events
                 .Where(e => e.AggregateId == sourceId)
                 .Where(e => e.SourceType == type)
@@ -53,7 +53,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public async Task<IEnumerable<Event>> LoadByMaxVersionAsync<T>(Guid sourceId, long maxVersion) where T : AggregateRoot
         {
-            var type = typeof(T).Name;
+            var type = typeof(T).FullName;
             var events = await this.db.Events
                             .Where(e => e.AggregateId == sourceId)
                             .Where(e => e.SourceType == type)
@@ -70,7 +70,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public async Task<IEnumerable<Event>> LoadByMaxVersionAsync<T>(Guid sourceId, long lastKnownVersion, long maxVersion) where T : AggregateRoot
         {
-            var type = typeof(T).Name;
+            var type = typeof(T).FullName;
             var events = await this.db.Events
                 .Where(e => e.AggregateId == sourceId)
                 .Where(e => e.SourceType == type)
@@ -88,7 +88,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public void Save(Type aggregateType, Event @event)
         {
-            var aggregateTypeName = aggregateType.Name;
+            var aggregateTypeName = aggregateType.FullName;
             if (aggregateTypeName.Length > 800)
             {
                 throw new InvalidOperationException("Cannot save an event when the aggregate type name length is greather than 800.");
@@ -110,7 +110,9 @@ namespace EasyCQRS.Azure.EventSourcing
 
         public Task SaveChangesAsync()
         {
-            return db.SaveChangesAsync();
+            db.SaveChanges();
+
+            return Task.FromResult(true);
         }
 
         private Event GetEvent(EventEntity entity)

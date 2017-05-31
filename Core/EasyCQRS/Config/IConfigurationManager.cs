@@ -1,6 +1,6 @@
 ﻿namespace EasyCQRS
 {
-    public interface ISettingManager
+    public interface IConfigurationManager
     {
         string GetSetting(string name);
     }
