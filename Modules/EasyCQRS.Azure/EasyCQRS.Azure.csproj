@@ -50,13 +50,8 @@
     <Compile Include="SnapshotEntity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\EasyCQRS\EasyCQRS.csproj">
-      <Project>{0382D8C3-435B-4D37-BA70-B4D95D4F7F9C}</Project>
-      <Name>EasyCQRS</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
+    <None Include="EasyCQRS.Azure.0.1.1-alpha.nupkg" />
     <None Include="pack.ps1" />
     <None Include="project.json" />
   </ItemGroup>
