@@ -173,7 +173,7 @@ namespace EasyCQRS.Tests
 
             mockSnapshotStore.Verify(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty));
 
-            Assert.Same(fakeAggregate, aggregate);
+            Assert.Same(fakeAggregate, aggregate);            
         }
 
         [Fact]

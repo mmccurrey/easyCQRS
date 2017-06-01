@@ -1,10 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using JetBrains.Annotations;
 
 namespace EasyCQRS.Azure
 {
-    class InfrastructureContext: DbContext
+    internal class InfrastructureContext: DbContext
     {
+        public InfrastructureContext()
+            : base()
+        {
+
+        }
+
+        public InfrastructureContext(DbContextOptions<InfrastructureContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<CommandEntity> Commands { get; set; }
         public DbSet<SagaEntity> Sagas { get; set; }
@@ -21,6 +33,15 @@ namespace EasyCQRS.Azure
 
                 base.OnConfiguring(optionsBuilder);
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EventEntity>()
+                        .HasKey(e => new { e.SourceType, e.AggregateId, e.Version });
+
+            modelBuilder.Entity<SagaEntity>()
+                        .HasKey(s => new { s.Id, s.Type });
         }
     }
 }

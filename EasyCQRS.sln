@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00-Infrastructure", "00-Infrastructure", "{17BB7ED6-8570-4BDF-96C6-B1557476E834}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.AutoFac", "Modules\EasyCQRS.AutoFac\EasyCQRS.AutoFac.csproj", "{4159D39E-F229-45A2-B84E-22863BA6B9E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Tests", "Core\EasyCQRS.Tests\EasyCQRS.Tests.csproj", "{9256AAE0-641C-4F4C-9BD1-10EC4CC11893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Azure.Tests", "Modules\EasyCQRS.Azure.Tests\EasyCQRS.Azure.Tests.csproj", "{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{9256AAE0-641C-4F4C-9BD1-10EC4CC11893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9256AAE0-641C-4F4C-9BD1-10EC4CC11893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9256AAE0-641C-4F4C-9BD1-10EC4CC11893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,6 @@ Global
 		{8849DA37-93FA-4209-B1AF-525A534C6106} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 		{4159D39E-F229-45A2-B84E-22863BA6B9E3} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 		{9256AAE0-641C-4F4C-9BD1-10EC4CC11893} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
+		{400CFE0F-F113-4FBD-B4A0-DF3D257A1B80} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 	EndGlobalSection
 EndGlobal

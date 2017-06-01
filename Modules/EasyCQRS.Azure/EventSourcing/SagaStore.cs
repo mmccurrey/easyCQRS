@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.EventSourcing
 {
-    class SagaStore: ISagaStore
+    internal class SagaStore: ISagaStore
     {
         private readonly IBus bus;
         private readonly ISagaSerializer sagaSerializer;

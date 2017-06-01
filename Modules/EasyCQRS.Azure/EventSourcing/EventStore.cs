@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.EventSourcing
 {
-    class EventStore: IEventStore
+    internal class EventStore: IEventStore
     {
         private readonly IMessageSerializer messageSerializer;
         private readonly InfrastructureContext db;
