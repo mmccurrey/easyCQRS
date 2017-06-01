@@ -39,7 +39,6 @@
     <Compile Include="EventEntity.cs" />
     <Compile Include="EventSourcing\SagaStore.cs" />
     <Compile Include="EventSourcing\SnapshotStore.cs" />
-    <Compile Include="Messaging\IEventSubscription.cs" />
     <Compile Include="Messaging\ServiceBusEventSubscription.cs" />
     <Compile Include="Messaging\ServiceBus.cs" />
     <Compile Include="Messaging\ServiceBusHelper.cs" />

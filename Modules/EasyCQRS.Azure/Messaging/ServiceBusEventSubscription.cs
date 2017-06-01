@@ -16,14 +16,14 @@ namespace EasyCQRS.Azure.Messaging
     public class ServiceBusEventSubscriber : IEventSubscriber
     {
         private readonly Config config;
-        private readonly ServiceBusManagementClient serviceBusManagementClient;
+        private readonly IServiceBusManagementClient serviceBusManagementClient;
         private readonly IMessageSerializer messageSerializer;
         private readonly IConfigurationManager configurationManager;
         private readonly ILogger logger;
 
         public ServiceBusEventSubscriber(
             Config config,
-            ServiceBusManagementClient serviceBusManagementClient,
+            IServiceBusManagementClient serviceBusManagementClient,
             IMessageSerializer messageSerializer,
             IConfigurationManager configurationManager,
             ILogger logger)

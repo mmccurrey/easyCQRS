@@ -10,7 +10,7 @@ namespace EasyCQRS.Azure.Messaging
 {
     class ServiceBusHelper
     {
-        internal static QueueClient GetCommandsQueueClient(IConfigurationManager configurationManager)
+        internal static IQueueClient GetCommandsQueueClient(IConfigurationManager configurationManager)
         {
             var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
             var queueName = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.CommandsQueue");
@@ -18,7 +18,7 @@ namespace EasyCQRS.Azure.Messaging
             return new QueueClient(connectionString, queueName);
         }
 
-        internal static TopicClient GetEventsTopicClient(IConfigurationManager configurationManager, ServiceBusManagementClient serviceBusManagementClient)
+        internal static ITopicClient GetEventsTopicClient(IConfigurationManager configurationManager, IServiceBusManagementClient serviceBusManagementClient)
         {
             var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
             var resourceGroup = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ResourceGroup");
@@ -37,7 +37,7 @@ namespace EasyCQRS.Azure.Messaging
             return new TopicClient(connectionString, topicName, RetryPolicy.Default);
         }
 
-        internal static SubscriptionClient GetEventsSubscriptionClient(IConfigurationManager configurationManager, ServiceBusManagementClient serviceBusManagementClient, string subscriptionName)
+        internal static ISubscriptionClient GetEventsSubscriptionClient(IConfigurationManager configurationManager, IServiceBusManagementClient serviceBusManagementClient, string subscriptionName)
         {
             var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
             var resourceGroup = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ResourceGroup");

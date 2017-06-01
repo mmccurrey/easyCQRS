@@ -12,30 +12,25 @@ namespace EasyCQRS.Azure.Messaging
 {
     class ServiceBus : IBus
     {
-        private readonly ServiceBusManagementClient serviceBusManagementClient;
         private readonly IMessageSerializer messageSerializer;
-        private readonly IConfigurationManager configurationManager;
         private readonly ILogger logger;
-
-        private readonly QueueClient commandsQueueClient;
-        private readonly TopicClient eventsTopicClient;
+        private readonly IQueueClient queueClient;
+        private readonly ITopicClient topicClient;
         private readonly InfrastructureContext db;
 
-        public ServiceBus(            
-            ServiceBusManagementClient serviceBusManagementClient,
+        public ServiceBus(                        
             IMessageSerializer messageSerializer,
-            IConfigurationManager configurationManager, 
+            IQueueClient queueClient,
+            ITopicClient topicClient,
             ILogger logger, 
             InfrastructureContext db)
         {
-            this.serviceBusManagementClient = serviceBusManagementClient ?? throw new ArgumentNullException("serviceBusManagementClient");
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
-            this.configurationManager = configurationManager ?? throw new ArgumentNullException("settingsManager");
+            this.queueClient = queueClient ?? throw new ArgumentNullException("queueClient");
+            this.topicClient = topicClient ?? throw new ArgumentNullException("topicClient");
             this.logger = logger ?? throw new ArgumentNullException("logger");
             this.db = db ?? throw new ArgumentNullException("db");
 
-            this.commandsQueueClient = ServiceBusHelper.GetCommandsQueueClient(configurationManager);
-            this.eventsTopicClient = ServiceBusHelper.GetEventsTopicClient(configurationManager, serviceBusManagementClient);
         }
 
         public async Task SendCommandAsync<T>(T command) where T : Command
@@ -68,7 +63,7 @@ namespace EasyCQRS.Azure.Messaging
                 brokeredMessage.UserProperties["Type"] = command.GetType().AssemblyQualifiedName;
                 brokeredMessage.UserProperties["Command"] = true;                 
 
-                await commandsQueueClient.SendAsync(brokeredMessage);
+                await queueClient.SendAsync(brokeredMessage);
 
                 entity.Success = true;
             }
@@ -86,9 +81,8 @@ namespace EasyCQRS.Azure.Messaging
             }
         }
 
-        public Task PublishEventsAsync(params Event[] events)
+        public async Task PublishEventsAsync(params Event[] events)
         {
-            var tasks = new List<Task>();
             if(events != null)
             {
                 foreach(var @event in events)
@@ -105,11 +99,9 @@ namespace EasyCQRS.Azure.Messaging
                     brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
                     brokeredMessage.UserProperties["Event"] = true;
 
-                    tasks.Add(eventsTopicClient.SendAsync(brokeredMessage));
+                    await topicClient.SendAsync(brokeredMessage);
                 }
             }
-
-            return Task.WhenAll(tasks);
         }
 
         
