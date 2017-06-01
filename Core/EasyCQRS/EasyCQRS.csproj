@@ -50,6 +50,7 @@
     <Compile Include="EventSourcing\ISaga.cs" />
     <Compile Include="EventSourcing\ISagaStore.cs" />
     <Compile Include="EventSourcing\ISnapshotStore.cs" />
+    <Compile Include="EventSourcing\JsonSagaSerializer.cs" />
     <Compile Include="EventSourcing\NullSnapshotStore.cs" />
     <Compile Include="Extensibility\IModule.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />

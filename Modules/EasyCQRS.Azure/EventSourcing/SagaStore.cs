@@ -68,6 +68,8 @@ namespace EasyCQRS.Azure.EventSourcing
             }
 
             db.SaveChanges();
+
+            await PutCommandsToBus(entity, saga);
         }
 
         private async Task PutCommandsToBus(SagaEntity entity, ISaga saga)
