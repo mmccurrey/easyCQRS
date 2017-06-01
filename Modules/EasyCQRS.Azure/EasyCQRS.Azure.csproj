@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandEntity.cs" />
+    <Compile Include="ConfigExtensions.cs" />
     <Compile Include="EventEntity.cs" />
     <Compile Include="EventSourcing\SagaStore.cs" />
     <Compile Include="Messaging\IEventSubscription.cs" />

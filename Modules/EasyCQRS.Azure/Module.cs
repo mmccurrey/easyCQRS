@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure
 {
-    public class Azure : IModule
+    public class AzureModule : IModule
     {
         public string Name => "EasyCQRS.Azure";
 
