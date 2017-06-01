@@ -20,6 +20,7 @@ namespace EasyCQRS.Azure
         public DbSet<EventEntity> Events { get; set; }
         public DbSet<CommandEntity> Commands { get; set; }
         public DbSet<SagaEntity> Sagas { get; set; }
+        public DbSet<SnapshotEntity> Snapshots { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +43,9 @@ namespace EasyCQRS.Azure
 
             modelBuilder.Entity<SagaEntity>()
                         .HasKey(s => new { s.Id, s.Type });
+
+            modelBuilder.Entity<SnapshotEntity>()
+                        .HasKey(s => new { s.SourceType, s.AggregateId, s.Version });
         }
     }
 }

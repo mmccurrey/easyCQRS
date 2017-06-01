@@ -18,13 +18,13 @@ namespace EasyCQRS.Messaging
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
             TypeNameHandling = TypeNameHandling.Auto,
-            ContractResolver = new NonPublicPropertiesResolver()
+            ContractResolver = new Serialization.NonPublicPropertiesContractResolver()
         };
 
         public TMessage Deserialize<TMessage>(byte[] data) where TMessage : IMessage
         {
             var json = Encoding.UTF8.GetString(data);
-            var message = JsonConvert.DeserializeObject<TMessage>(json);
+            var message = JsonConvert.DeserializeObject<TMessage>(json, Settings);
 
             return message;
         }

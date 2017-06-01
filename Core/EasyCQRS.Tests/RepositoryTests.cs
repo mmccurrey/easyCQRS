@@ -160,7 +160,7 @@ namespace EasyCQRS.Tests
             var fakeAggregate = new FakeAggregate(Guid.Empty);
             var mockSnapshotStore = new Mock<ISnapshotStore>();
 
-            mockSnapshotStore.Setup(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty)).ReturnsAsync(fakeAggregate);
+            mockSnapshotStore.Setup(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty, 1)).ReturnsAsync(fakeAggregate);
 
             var sut = new Repository(
                 Mock.Of<IEventStore>(),
@@ -171,7 +171,7 @@ namespace EasyCQRS.Tests
 
             var aggregate = await sut.GetByIdAsync<FakeAggregate>(Guid.Empty, 1);
 
-            mockSnapshotStore.Verify(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty));
+            mockSnapshotStore.Verify(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty, 1));
 
             Assert.Same(fakeAggregate, aggregate);            
         }
@@ -190,7 +190,7 @@ namespace EasyCQRS.Tests
             var mockEventStore = new Mock<IEventStore>();
             var mockSnapshotStore = new Mock<ISnapshotStore>();
 
-            mockSnapshotStore.Setup(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty)).ReturnsAsync(fakeAggregate);
+            mockSnapshotStore.Setup(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty, 2)).ReturnsAsync(fakeAggregate);
             mockEventStore.Setup(t => t.LoadByMaxVersionAsync<FakeAggregate>(Guid.Empty, 1, 2)).ReturnsAsync(new Event[] { fakeEvent2 });
 
             var sut = new Repository(
@@ -203,7 +203,7 @@ namespace EasyCQRS.Tests
 
             var aggregate = await sut.GetByIdAsync<FakeAggregate>(Guid.Empty, 2);
 
-            mockSnapshotStore.Verify(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty));
+            mockSnapshotStore.Verify(t => t.GetByIdAsync<FakeAggregate>(Guid.Empty, 2));
             mockEventStore.Verify(t => t.LoadByMaxVersionAsync<FakeAggregate>(Guid.Empty, 1 , 2));
 
             Assert.Same(fakeAggregate, aggregate);

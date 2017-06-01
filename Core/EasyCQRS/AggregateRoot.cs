@@ -11,13 +11,15 @@ namespace EasyCQRS
     {
         private readonly List<Event> changes = new List<Event>();
 
+        protected AggregateRoot(): base() { }
+
         public AggregateRoot(Guid id)
         {
             this.Id = id;
             this.Version = 0;
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
 
         public long Version { get; protected set; }
 

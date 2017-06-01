@@ -61,7 +61,7 @@ namespace EasyCQRS
             IEnumerable<Event> events = null;
 
             logger.Info("[Repository->GetByIdAsync] Retrieving aggregate {0}", id);
-            var snapshot = await snapshopStore.GetByIdAsync<T>(id);
+            var snapshot = await snapshopStore.GetByIdAsync<T>(id, version);
             if (snapshot != null)
             {
                 logger.Info("[Repository->GetByIdAsync] Snapshot found.");

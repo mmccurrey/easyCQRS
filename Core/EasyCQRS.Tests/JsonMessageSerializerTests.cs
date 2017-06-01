@@ -31,22 +31,16 @@ namespace EasyCQRS.Tests
         [Fact]
         public void JsonMessageSerializer_DeserializesEventProperty()
         {
+            var aggregateId = Guid.NewGuid();
+            var correlationId = Guid.NewGuid();            
+
             var sut = new JsonMessageSerializer();
-            var json = @"{
-                          ""EventId"": ""00000000-0000-0000-0000-000000000001"",
-                          ""AggregateId"": ""00000000-0000-0000-0000-000000000001"",
-                          ""CorrelationId"": ""00000000-0000-0000-0000-000000000001"",
-                          ""Version"": 1,
-                          ""Timestamp"": ""2017-01-01T00:00:00+00:00"",
-                          ""ExecutedBy"": null,
-                          ""Value"": ""Fake Value""
-                        }";
-
-            var bytes = Encoding.UTF8.GetBytes(json);
-
+            var bytes = sut.Serialize(new FakeEvent(correlationId, aggregateId, 1, null, "Fake Value"));
+            
             var message = sut.Deserialize<FakeEvent>(bytes);
 
-            Assert.Equal(Guid.Parse("00000000-0000-0000-0000-000000000001"), message.AggregateId);
+            Assert.Equal(correlationId, message.CorrelationId);
+            Assert.Equal(aggregateId, message.AggregateId);
             Assert.Equal(1, message.Version);
             Assert.Equal("Fake Value", message.Value);
         }

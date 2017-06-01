@@ -6,11 +6,20 @@ namespace EasyCQRS.Tests
 {
     public class FakeAggregate : AggregateRoot
     {
-        public string Value { get; private set; }
+
+        protected FakeAggregate(): base() { }
 
         public FakeAggregate(Guid id) : base(id)
         {
         }
+
+        public FakeAggregate(Guid id, long version):
+            this(id)
+        {
+            this.Version = version;
+        }
+
+        public string Value { get; protected set; }
 
         public void Fire(string value)
         {

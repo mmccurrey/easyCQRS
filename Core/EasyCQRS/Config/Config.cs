@@ -53,7 +53,9 @@ namespace EasyCQRS
 
             RegisterService<IBus, MemoryBus>();
             RegisterService<IRepository, Repository>();
+            RegisterService<IAggregateSerializer, JsonAggregateSerializer>();
             RegisterService<IMessageSerializer, JsonMessageSerializer>();
+            RegisterService<EventSourcing.ISagaSerializer, EventSourcing.JsonSagaSerializer>();
             RegisterService<EventSourcing.ISnapshotStore, EventSourcing.NullSnapshotStore>();
             RegisterService<Diagnostics.ILogger, Diagnostics.NullConsoleLogger>();
         }
