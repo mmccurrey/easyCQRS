@@ -26,10 +26,9 @@ namespace EasyCQRS.Azure
 
         public void Up(Config config)
         {        
-
             config.Container.Register(() => new InfrastructureContext());
-            config.Container.Register<IBus, Messaging.ServiceBus>();
-            config.Container.Register<IEventSubscriber, Messaging.ServiceBusEventSubscriber>();
+            config.Container.Register<IBus, ServiceBus>();
+            config.Container.Register<IEventSubscriber, ServiceBusEventSubscriber>();
             config.Container.Register<IEventStore, EventSourcing.EventStore>();
             config.Container.Register<ISagaStore, EventSourcing.SagaStore>();
             config.Container.Register<IServiceBusManagementClient>(() =>

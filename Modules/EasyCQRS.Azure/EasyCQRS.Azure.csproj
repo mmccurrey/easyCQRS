@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="pack.ps1" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup />

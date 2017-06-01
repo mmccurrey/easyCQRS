@@ -1,0 +1,1 @@
+﻿nuget.exe pack EasyCQRS.Azure.csproj -Build -Verbosity Detailed -properties "Configuration=Release"
