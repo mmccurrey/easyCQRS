@@ -18,7 +18,7 @@ namespace EasyCQRS.Tests
         {
             var fakeAggregate = new FakeAggregate(Guid.Empty);
 
-            var mockBus = new Mock<IBus>();
+            var mockBus = new Mock<IEventBus>();
             
             mockBus.Setup(t => t.PublishEventsAsync(It.IsAny<FakeEvent>())).Returns(Task.FromResult(0));
 
@@ -50,7 +50,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 mockEventStore.Object,
                 Mock.Of<ISnapshotStore>(),
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 
@@ -74,7 +74,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 mockEventStore.Object,
                 Mock.Of<ISnapshotStore>(),
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()                
                 );
             
@@ -94,7 +94,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 Mock.Of<IEventStore>(),
                 mockSnapshotStore.Object,
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 
@@ -120,7 +120,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 mockEventStore.Object,
                 mockSnapshotStore.Object,
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 
@@ -145,7 +145,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 mockEventStore.Object,
                 Mock.Of<ISnapshotStore>(),
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 
@@ -165,7 +165,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 Mock.Of<IEventStore>(),
                 mockSnapshotStore.Object,
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 
@@ -196,7 +196,7 @@ namespace EasyCQRS.Tests
             var sut = new Repository(
                 mockEventStore.Object,
                 mockSnapshotStore.Object,
-                Mock.Of<IBus>(),
+                Mock.Of<IEventBus>(),
                 Mock.Of<ILogger>()
                 );
 

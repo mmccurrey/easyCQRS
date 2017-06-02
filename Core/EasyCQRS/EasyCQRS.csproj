@@ -55,11 +55,12 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="JsonAggregateSerializer.cs" />
+    <Compile Include="Messaging\IEventBus.cs" />
     <Compile Include="Messaging\IEventSubscriber.cs" />
     <Compile Include="Messaging\JsonMessageSerializer.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\Event.cs" />
-    <Compile Include="Messaging\IBus.cs" />
+    <Compile Include="Messaging\ICommandBus.cs" />
     <Compile Include="Messaging\IHandler.cs" />
     <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Messaging\IMessageSerializer.cs" />

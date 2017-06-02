@@ -10,12 +10,12 @@ namespace EasyCQRS.Azure.EventSourcing
 {
     internal class SagaStore: ISagaStore
     {
-        private readonly IBus bus;
+        private readonly ICommandBus bus;
         private readonly ISagaSerializer sagaSerializer;
         private readonly InfrastructureContext db;
 
         public SagaStore(
-            IBus bus,
+            ICommandBus bus,
             ISagaSerializer sagaSerializer,            
             InfrastructureContext db)
         {

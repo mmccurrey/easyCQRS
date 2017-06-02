@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
-    class MemoryBus : IBus
+    class MemoryBus : ICommandBus, IEventBus
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ILogger logger;

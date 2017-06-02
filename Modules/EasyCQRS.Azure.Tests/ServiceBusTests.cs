@@ -18,7 +18,7 @@ namespace EasyCQRS.Azure.Tests
     public class ServiceBusTests
     {
         [Fact]
-        public void ServiceBus_IsAssignableFromIBus()
+        public void ServiceBus_IsAssignableFromIEventBus()
         {
             var options = SetupContext();
 
@@ -31,10 +31,29 @@ namespace EasyCQRS.Azure.Tests
                                             Mock.Of<ILogger>(),
                                             context);
 
-                Assert.IsAssignableFrom<IBus>(sut);
+                Assert.IsAssignableFrom<IEventBus>(sut);
             }
         }
-        
+
+        [Fact]
+        public void ServiceBus_IsAssignableFromICommandBus()
+        {
+            var options = SetupContext();
+
+            using (var context = new InfrastructureContext(options))
+            {
+
+                var sut = new ServiceBus(
+                                            Mock.Of<IMessageSerializer>(),
+                                            Mock.Of<IQueueClient>(),
+                                            Mock.Of<ITopicClient>(),
+                                            Mock.Of<ILogger>(),
+                                            context);
+
+                Assert.IsAssignableFrom<ICommandBus>(sut);
+            }
+        }
+
         [Fact]
         public async Task ServiceBus_SendCommandAsyncPersistsChangesToContext()
         {

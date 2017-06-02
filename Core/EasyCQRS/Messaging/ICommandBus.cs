@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
-    public interface IBus
+    public interface ICommandBus
     {
         Task SendCommandAsync<T>(T command) where T : Command;
-
-        Task PublishEventsAsync(params Event[] events);
     }
 }

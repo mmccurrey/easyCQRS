@@ -21,7 +21,8 @@ namespace EasyCQRS
         public static IServiceCollection UseAzureForEasyCQRS(this IServiceCollection services)
         {
             return  services.AddTransient((p) => new InfrastructureContext())
-                            .AddTransient<IBus, ServiceBus>()
+                            .AddTransient<ICommandBus, ServiceBus>()
+                            .AddTransient<IEventBus, ServiceBus>()
                             .AddTransient<IEventSubscriber, ServiceBusEventSubscriber>()
                             .AddTransient<IEventStore, EventStore>()
                             .AddTransient<ISagaStore, SagaStore>()

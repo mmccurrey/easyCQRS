@@ -13,7 +13,7 @@ namespace EasyCQRS
     {
         private readonly IEventStore eventStore;
         private readonly ISnapshotStore snapshopStore;
-        private readonly IBus bus;
+        private readonly IEventBus bus;
         private readonly ILogger logger;
 
         private HashSet<AggregateRoot> __aggregatesModified = new HashSet<AggregateRoot>();
@@ -21,7 +21,7 @@ namespace EasyCQRS
         public Repository(
             IEventStore eventStore,
             ISnapshotStore snapshopStore,
-            IBus bus,
+            IEventBus bus,
             ILogger logger)
         {
             this.eventStore = eventStore ?? throw new ArgumentNullException("eventStore");

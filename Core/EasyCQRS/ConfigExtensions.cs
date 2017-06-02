@@ -17,14 +17,20 @@ namespace EasyCQRS
             return services.AddSingleton<ILogger, ConsoleLogger>();
         }
 
-        public static IServiceCollection UseMemoryBus(this IServiceCollection services)
+        public static IServiceCollection UseEventMemoryBus(this IServiceCollection services)
         {
-            return services.AddSingleton<IBus, MemoryBus>();
+            return services.AddSingleton<IEventBus, MemoryBus>();
+        }
+
+        public static IServiceCollection UseCommandMemoryBus(this IServiceCollection services)
+        {
+            return services.AddSingleton<ICommandBus, MemoryBus>();
         }
 
         public static IServiceCollection UseEasyCQRS(this IServiceCollection services)
         {
-            return  services.AddTransient<IBus, MemoryBus>()
+            return  services.AddSingleton<ICommandBus, MemoryBus>()
+                            .AddSingleton<IEventBus, MemoryBus>()
                             .AddTransient<IRepository, Repository>()
                             .AddTransient<IAggregateSerializer, JsonAggregateSerializer>()
                             .AddTransient<IMessageSerializer, JsonMessageSerializer>()

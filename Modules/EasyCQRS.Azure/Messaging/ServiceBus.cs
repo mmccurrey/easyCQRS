@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.Messaging
 {
-    class ServiceBus : IBus
+    class ServiceBus : ICommandBus, IEventBus
     {
         private readonly IMessageSerializer messageSerializer;
         private readonly ILogger logger;

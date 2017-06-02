@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("EasyCQRS")]
 [assembly: AssemblyCopyright("2017")]
 [assembly: AssemblyTrademark("EasyCQRS")]
-[assembly: AssemblyVersion("0.1.2.1")]
-[assembly: AssemblyFileVersion("0.1.2.1")]
+[assembly: AssemblyVersion("0.1.2.2")]
+[assembly: AssemblyFileVersion("0.1.2.2")]
 
 [assembly: InternalsVisibleTo("EasyCQRS.Tests")]

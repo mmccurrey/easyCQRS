@@ -23,7 +23,7 @@ namespace EasyCQRS.Azure.Tests
 
             using(var context = new InfrastructureContext(options))
             {
-                var sut = new SagaStore(Mock.Of<IBus>(), Mock.Of<ISagaSerializer>(), context);
+                var sut = new SagaStore(Mock.Of<ICommandBus>(), Mock.Of<ISagaSerializer>(), context);
 
                 Assert.IsAssignableFrom<ISagaStore>(sut);
             }
@@ -50,7 +50,7 @@ namespace EasyCQRS.Azure.Tests
                                       });
                               });
 
-                var sut = new SagaStore(Mock.Of<IBus>(), stubSagaSerializer.Object, context);
+                var sut = new SagaStore(Mock.Of<ICommandBus>(), stubSagaSerializer.Object, context);
 
                 var saga = await sut.FindAsync<FakeSaga>(ToGuid(1));
 
@@ -80,7 +80,7 @@ namespace EasyCQRS.Azure.Tests
                                       });
                               });
 
-                var sut = new SagaStore(Mock.Of<IBus>(), stubSagaSerializer.Object, context);
+                var sut = new SagaStore(Mock.Of<ICommandBus>(), stubSagaSerializer.Object, context);
 
                 var saga = await sut.FindAsync<FakeSaga>(ToGuid(3));
 
@@ -95,7 +95,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var mockBus = new Mock<IBus>();
+                var mockBus = new Mock<ICommandBus>();
 
                 var stubSagaSerializer = new Mock<ISagaSerializer>();
                 stubSagaSerializer.Setup(s => s.Deserialize<FakeSaga>(It.IsAny<byte[]>()))
@@ -126,7 +126,7 @@ namespace EasyCQRS.Azure.Tests
             using (var context = new InfrastructureContext(options))
             {
                 var saga = new FakeSaga { Id = Guid.Empty };
-                var sut = new SagaStore(Mock.Of<IBus>(), Mock.Of<ISagaSerializer>(), context);
+                var sut = new SagaStore(Mock.Of<ICommandBus>(), Mock.Of<ISagaSerializer>(), context);
 
                 await sut.SaveAsync(saga);
 
@@ -163,7 +163,7 @@ namespace EasyCQRS.Azure.Tests
                                   });
 
                 var saga = new FakeSaga { Id = Guid.Empty };
-                var sut = new SagaStore(Mock.Of<IBus>(), stubSagaSerializer.Object, context);
+                var sut = new SagaStore(Mock.Of<ICommandBus>(), stubSagaSerializer.Object, context);
 
                 await sut.SaveAsync(saga);
 
@@ -178,7 +178,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var mockBus = new Mock<IBus>();       
+                var mockBus = new Mock<ICommandBus>();       
 
                 var saga = new FakeSaga { Id = Guid.Empty, PendingCommands = { new FakeCommand() }};
                 var sut = new SagaStore(mockBus.Object, Mock.Of<ISagaSerializer>(), context);
@@ -196,7 +196,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var mockBus = new Mock<IBus>();
+                var mockBus = new Mock<ICommandBus>();
                 mockBus.SetupSequence(s => s.SendCommandAsync<Command>(It.IsAny<FakeCommand>()))
                        .Returns(Task.CompletedTask)
                        .Throws(new DbUpdateException("Cannot save entity in db. Connection closed", new Exception()));
