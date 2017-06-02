@@ -1,22 +1,20 @@
-﻿using EasyCQRS.DI;
-using EasyCQRS.Diagnostics;
+﻿using EasyCQRS.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
     class MemoryBus : IBus
     {
-        private readonly IDependencyResolver container;
+        private readonly IServiceProvider serviceProvider;
         private readonly ILogger logger;
 
-        public MemoryBus(IDependencyResolver container, ILogger logger)
+        public MemoryBus(IServiceProvider serviceProvider, ILogger logger)
         {
-            this.container = container ?? throw new ArgumentNullException("container");
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException("serviceProvider");
             this.logger = logger ?? throw new ArgumentNullException("logger");
         }
 
@@ -43,7 +41,7 @@ namespace EasyCQRS.Messaging
         private Task SendMessage<T>(T message) where T : IMessage
         {
             var handlerType = typeof(IHandler<>).MakeGenericType(message.GetType());
-            var handlers = container.ResolveAll(handlerType);
+            var handlers = serviceProvider.GetServices(handlerType);
 
             if (typeof(Event).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo()))
             {

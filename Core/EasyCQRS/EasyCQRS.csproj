@@ -37,14 +37,10 @@
   <ItemGroup>
     <Compile Include="AggregateRoot.cs" />
     <Compile Include="ConfigExtensions.cs" />
-    <Compile Include="Config\Config.cs" />
     <Compile Include="Config\IConfigurationManager.cs" />
     <Compile Include="Diagnostics\ILogger.cs" />
     <Compile Include="Diagnostics\ConsoleLogger.cs" />
     <Compile Include="Diagnostics\NullConsoleLogger.cs" />
-    <Compile Include="DI\DefaultDependencyResolver.cs" />
-    <Compile Include="DI\DependencyInfo.cs" />
-    <Compile Include="DI\IDependencyResolver.cs" />
     <Compile Include="EventSourcing\IEventStore.cs" />
     <Compile Include="EventSourcing\ISagaSerializer.cs" />
     <Compile Include="EventSourcing\ISaga.cs" />
@@ -52,7 +48,6 @@
     <Compile Include="EventSourcing\ISnapshotStore.cs" />
     <Compile Include="EventSourcing\JsonSagaSerializer.cs" />
     <Compile Include="EventSourcing\NullSnapshotStore.cs" />
-    <Compile Include="Extensibility\IModule.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="IAggregateReader.cs" />

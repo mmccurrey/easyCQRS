@@ -2,6 +2,7 @@
 using EasyCQRS.Messaging;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,20 @@ namespace EasyCQRS.Azure.Messaging
 {
     public class ServiceBusEventSubscriber : IEventSubscriber
     {
-        private readonly Config config;
+        private readonly IServiceProvider serviceProvider;
         private readonly IServiceBusManagementClient serviceBusManagementClient;
         private readonly IMessageSerializer messageSerializer;
         private readonly IConfigurationManager configurationManager;
         private readonly ILogger logger;
 
         public ServiceBusEventSubscriber(
-            Config config,
+            IServiceProvider serviceProvider,
             IServiceBusManagementClient serviceBusManagementClient,
             IMessageSerializer messageSerializer,
             IConfigurationManager configurationManager,
             ILogger logger)
         {
-            this.config = config ?? throw new ArgumentNullException("config");
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException("config");
             this.serviceBusManagementClient = serviceBusManagementClient ?? throw new ArgumentNullException("serviceBusManagementClient");
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
             this.configurationManager = configurationManager ?? throw new ArgumentNullException("settingsManager");
@@ -58,7 +59,7 @@ namespace EasyCQRS.Azure.Messaging
                 @event =>
                 {
                     var handlerType = typeof(IHandler<>).MakeGenericType(@event.GetType());
-                    var handlers = config.Container.ResolveAll(handlerType);
+                    var handlers = serviceProvider.GetServices(handlerType);
 
                     foreach(var handler in handlers)
                     {

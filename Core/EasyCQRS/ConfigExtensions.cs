@@ -1,5 +1,7 @@
 ﻿using EasyCQRS.Diagnostics;
+using EasyCQRS.EventSourcing;
 using EasyCQRS.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +12,25 @@ namespace EasyCQRS
 {
     public static class ConfigExtensions
     {
-        public static Config UseDefaultContainer(this Config config)
+        public static IServiceCollection UseConsoleLogging(this IServiceCollection services)
         {
-            config.ReplaceIoCContainer(null);
-
-            return config;
+            return services.AddSingleton<ILogger, ConsoleLogger>();
         }
 
-        public static Config UseConsoleLogging(this Config config)
+        public static IServiceCollection UseMemoryBus(this IServiceCollection services)
         {
-            config.Container.Register<ILogger, ConsoleLogger>();
-
-            return config;
+            return services.AddSingleton<IBus, MemoryBus>();
         }
 
-        public static Config UseMemoryBus(this Config config)
+        public static IServiceCollection UseEasyCQRS(this IServiceCollection services)
         {
-            config.Container.Register<IBus, MemoryBus>();
-
-            return config;
+            return  services.AddTransient<IBus, MemoryBus>()
+                            .AddTransient<IRepository, Repository>()
+                            .AddTransient<IAggregateSerializer, JsonAggregateSerializer>()
+                            .AddTransient<IMessageSerializer, JsonMessageSerializer>()
+                            .AddTransient<ISagaSerializer, JsonSagaSerializer>()
+                            .AddTransient<ISnapshotStore, NullSnapshotStore>()
+                            .AddTransient<ILogger, NullConsoleLogger>();
         }
     }
 }
