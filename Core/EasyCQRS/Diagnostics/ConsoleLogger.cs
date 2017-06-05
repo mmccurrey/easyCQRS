@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Diagnostics
 {
-    class ConsoleLogger : ILogger
+    public class ConsoleLogger : ILogger
     {
         public void Error(string format, params object[] args)
         {

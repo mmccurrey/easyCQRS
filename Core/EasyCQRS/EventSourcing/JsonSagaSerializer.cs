@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace EasyCQRS.EventSourcing
 {
-    internal class JsonSagaSerializer : ISagaSerializer
+    public class JsonSagaSerializer : ISagaSerializer
     {
         private static JsonSerializerSettings Settings = new JsonSerializerSettings
         {

@@ -10,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("EasyCQRS")]
 [assembly: AssemblyVersion("0.1.2.2")]
 [assembly: AssemblyFileVersion("0.1.2.2")]
-[assembly: AssemblyInformationalVersion("0.1.2-alpha1")]
+[assembly: AssemblyInformationalVersion("0.1.2-alpha2")]
 
 [assembly: InternalsVisibleTo("EasyCQRS.Azure.Tests")]

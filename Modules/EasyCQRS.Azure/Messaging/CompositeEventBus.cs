@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.Messaging
 {
-    public class CompositeEventBus: IEventBus
+    public class CompositeEventBus : IEventBus
     {
         private readonly IEventBus[] buses;
 
@@ -18,10 +18,10 @@ namespace EasyCQRS.Azure.Messaging
 
         public async Task PublishEventsAsync(params Event[] events)
         {
-            foreach (var bus in buses)
+            foreach(var bus in buses)
             {
                 await bus.PublishEventsAsync(events);
-            }
+            }            
         }
     }
 }

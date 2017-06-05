@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.EventSourcing
 {
-    internal class NullSnapshotStore : ISnapshotStore
+    public class NullSnapshotStore : ISnapshotStore
     {
 
         public Task<T> GetByIdAsync<T>(Guid id) where T : AggregateRoot

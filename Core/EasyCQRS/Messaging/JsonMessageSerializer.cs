@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace EasyCQRS.Messaging
 {
-    internal class JsonMessageSerializer : IMessageSerializer
+    public class JsonMessageSerializer : IMessageSerializer
     {
         private static JsonSerializerSettings Settings = new JsonSerializerSettings
         {
