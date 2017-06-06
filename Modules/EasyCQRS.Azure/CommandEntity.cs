@@ -16,6 +16,7 @@ namespace EasyCQRS.Azure
         public Guid? ExecutedBy { get; set; }
         public DateTimeOffset ScheduledAt { get; set; }
         public DateTimeOffset? ExecutedAt { get; set; }
+        public string FullName { get; set; }
         public string Type { get; set; }
         public bool Executed { get; set; }
         public bool Success { get; set; }

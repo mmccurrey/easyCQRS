@@ -22,7 +22,7 @@ namespace EasyCQRS.Azure
                         .HasKey(e => new { e.SourceType, e.AggregateId, e.Version });
 
             modelBuilder.Entity<SagaEntity>()
-                        .HasKey(s => new { s.Id, s.Type });
+                        .HasKey(s => new { s.Id, s.FullName });
 
             modelBuilder.Entity<SnapshotEntity>()
                         .HasKey(s => new { s.SourceType, s.AggregateId, s.Version });

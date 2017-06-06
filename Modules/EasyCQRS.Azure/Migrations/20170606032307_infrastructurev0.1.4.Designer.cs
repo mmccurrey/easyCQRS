@@ -8,8 +8,8 @@ using EasyCQRS.Azure;
 namespace EasyCQRS.Azure.Migrations
 {
     [DbContext(typeof(InfrastructureContext))]
-    [Migration("20170606015711_init")]
-    partial class init
+    [Migration("20170606032307_infrastructurev0.1.4")]
+    partial class infrastructurev014
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,8 @@ namespace EasyCQRS.Azure.Migrations
                     b.Property<DateTimeOffset?>("ExecutedAt");
 
                     b.Property<Guid?>("ExecutedBy");
+
+                    b.Property<string>("FullName");
 
                     b.Property<byte[]>("Payload");
 
@@ -58,6 +60,8 @@ namespace EasyCQRS.Azure.Migrations
 
                     b.Property<DateTimeOffset>("Date");
 
+                    b.Property<string>("FullName");
+
                     b.Property<byte[]>("Payload")
                         .HasMaxLength(2147483647);
 
@@ -74,7 +78,7 @@ namespace EasyCQRS.Azure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("FullName")
                         .HasMaxLength(500);
 
                     b.Property<bool>("Completed");
@@ -83,7 +87,11 @@ namespace EasyCQRS.Azure.Migrations
 
                     b.Property<byte[]>("Payload");
 
-                    b.HasKey("Id", "Type");
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id", "FullName");
+
+                    b.HasAlternateKey("FullName", "Id");
 
                     b.ToTable("Sagas");
                 });

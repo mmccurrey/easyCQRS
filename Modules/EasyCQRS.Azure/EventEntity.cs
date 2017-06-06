@@ -26,6 +26,8 @@ namespace EasyCQRS.Azure
         public DateTimeOffset Date { get; set; }
         public string Type { get; set; }
 
+        public string FullName { get; set; }
+
         [MaxLength(Int32.MaxValue)]
         public byte[] Payload { get; set; }
     }

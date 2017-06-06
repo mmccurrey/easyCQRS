@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <Version>0.1.2-alpha4</Version>
+    <Version>0.1.2-alpha7</Version>
     <Authors>Kellerman Rivero</Authors>
     <Product>EasyCQRS Azure Module (Service Bus, SQL Event Store, etc)</Product>
     <Description>Azure Module for EasyCQRS</Description>

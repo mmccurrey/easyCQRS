@@ -17,6 +17,8 @@ namespace EasyCQRS.Azure
         public Guid CorrelationId { get; set; }
 
         [Key, Column(Order = 2), StringLength(500)]
+        public string FullName { get; set; }
+        
         public string Type { get; set; }
 
         public bool Completed { get; set; }

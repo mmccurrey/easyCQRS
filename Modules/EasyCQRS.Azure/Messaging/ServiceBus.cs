@@ -42,7 +42,8 @@ namespace EasyCQRS.Azure.Messaging
                 Id = command.CommandId,
                 CorrelationId = command.CorrelationId,
                 ExecutedBy = command.ExecutedBy,
-                Type = command.GetType().FullName,
+                Type = command.GetType().AssemblyQualifiedName,
+                FullName = command.GetType().FullName,
                 ScheduledAt = DateTimeOffset.UtcNow,                
                 Payload = messageSerializer.Serialize(command)                
             };

@@ -31,6 +31,8 @@ namespace EasyCQRS.Azure.Migrations
 
                     b.Property<Guid?>("ExecutedBy");
 
+                    b.Property<string>("FullName");
+
                     b.Property<byte[]>("Payload");
 
                     b.Property<DateTimeOffset>("ScheduledAt");
@@ -57,6 +59,8 @@ namespace EasyCQRS.Azure.Migrations
 
                     b.Property<DateTimeOffset>("Date");
 
+                    b.Property<string>("FullName");
+
                     b.Property<byte[]>("Payload")
                         .HasMaxLength(2147483647);
 
@@ -73,7 +77,7 @@ namespace EasyCQRS.Azure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("FullName")
                         .HasMaxLength(500);
 
                     b.Property<bool>("Completed");
@@ -82,7 +86,11 @@ namespace EasyCQRS.Azure.Migrations
 
                     b.Property<byte[]>("Payload");
 
-                    b.HasKey("Id", "Type");
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id", "FullName");
+
+                    b.HasAlternateKey("FullName", "Id");
 
                     b.ToTable("Sagas");
                 });

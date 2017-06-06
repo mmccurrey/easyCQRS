@@ -43,11 +43,22 @@ namespace EasyCQRS.Azure.Messaging
 
                                                            client.RegisterMessageHandler((message, cancellationToken) =>
                                                            {
-                                                               var @event = messageSerializer.Deserialize<Event>(
-                                                                   Type.GetType(message.UserProperties["FullName"] as string), 
-                                                                   message.Body);
+                                                               try
+                                                               {
+                                                                   var eventType = Type.GetType(message.UserProperties["Type"] as string);
 
-                                                               observer.OnNext(@event);
+                                                                   if (eventType != null)
+                                                                   {
+                                                                       var @event = messageSerializer.Deserialize<Event>(
+                                                                           eventType, message.Body);
+
+                                                                       observer.OnNext(@event);
+                                                                   }
+                                                               }
+                                                               catch
+                                                               {
+                                                                   logger.Warning("Cannot deserialize message. ");
+                                                               }
 
                                                                return Task.FromResult(true);
                                                            });

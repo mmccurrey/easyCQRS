@@ -78,7 +78,8 @@ namespace EasyCQRS.Azure.Tests
                 Assert.Equal(fakeEvent.Timestamp, eventEntity.Date);
                 Assert.Equal(fakeEvent.Version, eventEntity.Version);
                 Assert.Equal(typeof(FakeAggregate).FullName, eventEntity.SourceType);
-                Assert.Equal(typeof(FakeEvent).FullName, eventEntity.Type);
+                Assert.Equal(typeof(FakeEvent).AssemblyQualifiedName, eventEntity.Type);
+                Assert.Equal(typeof(FakeEvent).FullName, eventEntity.FullName);
             }
         }
 

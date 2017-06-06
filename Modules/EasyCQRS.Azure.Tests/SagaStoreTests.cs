@@ -39,16 +39,16 @@ namespace EasyCQRS.Azure.Tests
                 var stubSagaSerializer = new Mock<ISagaSerializer>();
 
                 stubSagaSerializer.Setup(s => s.Deserialize<FakeSaga>(It.IsAny<byte[]>()))
-                              .Returns<byte[]>((v) =>
-                              {
-                                  var payload = Encoding.UTF8.GetString(v);
-                                  return JsonConvert.DeserializeObject<FakeSaga>(
-                                      payload,
-                                      new JsonSerializerSettings
-                                      {
-                                          TypeNameHandling = TypeNameHandling.All
-                                      });
-                              });
+                                  .Returns<byte[]>((v) =>
+                                  {
+                                      var payload = Encoding.UTF8.GetString(v);
+                                      return JsonConvert.DeserializeObject<FakeSaga>(
+                                          payload,
+                                          new JsonSerializerSettings
+                                          {
+                                              TypeNameHandling = TypeNameHandling.All
+                                          });
+                                  });
 
                 var sut = new SagaStore(Mock.Of<ICommandBus>(), stubSagaSerializer.Object, context);
 
@@ -99,16 +99,16 @@ namespace EasyCQRS.Azure.Tests
 
                 var stubSagaSerializer = new Mock<ISagaSerializer>();
                 stubSagaSerializer.Setup(s => s.Deserialize<FakeSaga>(It.IsAny<byte[]>()))
-                              .Returns<byte[]>((v) =>
-                              {
-                                  var payload = Encoding.UTF8.GetString(v);
-                                  return JsonConvert.DeserializeObject<FakeSaga>(
-                                      payload,
-                                      new JsonSerializerSettings
-                                      {
-                                          TypeNameHandling = TypeNameHandling.All
-                                      });
-                              });
+                                  .Returns<byte[]>((v) =>
+                                  {
+                                      var payload = Encoding.UTF8.GetString(v);
+                                      return JsonConvert.DeserializeObject<FakeSaga>(
+                                          payload,
+                                          new JsonSerializerSettings
+                                          {
+                                              TypeNameHandling = TypeNameHandling.All
+                                          });
+                                  });
 
                 var sut = new SagaStore(mockBus.Object, stubSagaSerializer.Object, context);
 
@@ -289,7 +289,8 @@ namespace EasyCQRS.Azure.Tests
                 CorrelationId = correlationId,
                 Id = sagaId,
                 Completed = completed,
-                Type = typeof(FakeSaga).FullName,
+                Type = typeof(FakeSaga).AssemblyQualifiedName,
+                FullName = typeof(FakeSaga).FullName,
                 Payload = Encoding.UTF8.GetBytes(json)
             };
         }
