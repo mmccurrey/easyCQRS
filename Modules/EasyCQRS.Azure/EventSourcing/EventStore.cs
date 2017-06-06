@@ -117,7 +117,7 @@ namespace EasyCQRS.Azure.EventSourcing
 
         private Event GetEvent(EventEntity entity)
         {
-            return messageSerializer.Deserialize<Event>(entity.Payload);
+            return messageSerializer.Deserialize<Event>(Type.GetType(entity.Type), entity.Payload);
         }
     }
 }
