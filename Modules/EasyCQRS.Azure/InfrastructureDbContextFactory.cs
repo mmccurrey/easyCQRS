@@ -13,7 +13,7 @@ namespace EasyCQRS.Azure
             var builder = new DbContextOptionsBuilder<InfrastructureContext>();            
 
             builder.UseSqlServer(
-                "Server=(localdb)\\mssqllocaldb;Database=MyContosoUniversityCoreDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+                "Server=(localdb)\\mssqllocaldb;Database=Infrastructure;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             return new InfrastructureContext(builder.Options);
         }

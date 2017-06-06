@@ -8,8 +8,8 @@ using EasyCQRS.Azure;
 namespace EasyCQRS.Azure.Migrations
 {
     [DbContext(typeof(InfrastructureContext))]
-    [Migration("20170606032307_infrastructurev0.1.4")]
-    partial class infrastructurev014
+    [Migration("20170606033442_InfrastructureV0.1.4")]
+    partial class InfrastructureV014
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
