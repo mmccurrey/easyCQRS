@@ -21,10 +21,10 @@ namespace EasyCQRS.Messaging
             ContractResolver = new Serialization.NonPublicPropertiesContractResolver()
         };
 
-        public TMessage Deserialize<TMessage>(byte[] data) where TMessage : IMessage
+        public TMessage Deserialize<TMessage>(Type type, byte[] data) where TMessage : IMessage
         {
             var json = Encoding.UTF8.GetString(data);
-            var message = JsonConvert.DeserializeObject<TMessage>(json, Settings);
+            var message = (TMessage) JsonConvert.DeserializeObject(json, type, Settings);
 
             return message;
         }
@@ -35,21 +35,6 @@ namespace EasyCQRS.Messaging
             var result = Encoding.UTF8.GetBytes(json);
 
             return result;
-        }
-
-        class NonPublicPropertiesResolver : DefaultContractResolver
-        {
-            protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
-            {
-                var prop = base.CreateProperty(member, memberSerialization);
-                var pi = member as System.Reflection.PropertyInfo;
-                if (pi != null)
-                {
-                    prop.Readable = (pi.GetMethod != null);
-                    prop.Writable = (pi.SetMethod != null);
-                }
-                return prop;
-            }
         }
     }
 }

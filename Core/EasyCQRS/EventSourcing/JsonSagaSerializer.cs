@@ -16,8 +16,8 @@ namespace EasyCQRS.EventSourcing
         private static JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
+            TypeNameHandling = TypeNameHandling.All,
             ContractResolver = new Serialization.NonPublicPropertiesContractResolver()
         };
 

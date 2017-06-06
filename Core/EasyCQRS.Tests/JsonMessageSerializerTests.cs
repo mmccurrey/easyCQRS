@@ -37,7 +37,7 @@ namespace EasyCQRS.Tests
             var sut = new JsonMessageSerializer();
             var bytes = sut.Serialize(new FakeEvent(correlationId, aggregateId, 1, null, "Fake Value"));
             
-            var message = sut.Deserialize<FakeEvent>(bytes);
+            var message = (FakeEvent) sut.Deserialize<Event>(typeof(FakeEvent), bytes);
 
             Assert.Equal(correlationId, message.CorrelationId);
             Assert.Equal(aggregateId, message.AggregateId);

@@ -1,68 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputType>exe</OutputType>
+  </PropertyGroup>
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8849DA37-93FA-4209-B1AF-525A534C6106}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyCQRS.Azure</RootNamespace>
-    <AssemblyName>EasyCQRS.Azure</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Version>0.1.2-alpha3</Version>
+    <Authors>Kellerman Rivero</Authors>
+    <Product>EasyCQRS Azure Module (Service Bus, SQL Event Store, etc)</Product>
+    <Description>Azure Module for EasyCQRS</Description>
+    <AssemblyVersion>0.1.2.2</AssemblyVersion>
+    <FileVersion>0.1.2.2</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="CommandEntity.cs" />
-    <Compile Include="ConfigExtensions.cs" />
-    <Compile Include="EventEntity.cs" />
-    <Compile Include="EventSourcing\SagaStore.cs" />
-    <Compile Include="EventSourcing\SnapshotStore.cs" />
-    <Compile Include="Messaging\CompositeEventBus.cs" />
-    <Compile Include="Messaging\IntegrationEventBus.cs" />
-    <Compile Include="Messaging\ServiceBusEventSubscription.cs" />
-    <Compile Include="Messaging\ServiceBus.cs" />
-    <Compile Include="Messaging\ServiceBusHelper.cs" />
-    <Compile Include="InfrastructureContext.cs" />
-    <Compile Include="EventSourcing\EventStore.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SagaEntity.cs" />
-    <Compile Include="SnapshotEntity.cs" />
+    <PackageReference Include="EasyCQRS" Version="0.1.2.3" />
+    <PackageReference Include="Microsoft.Azure.Management.ServiceBus.Fluent" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="0.0.6-preview" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime.Azure" Version="3.3.8" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="EasyCQRS.Azure.0.1.1-alpha.nupkg" />
-    <None Include="pack.ps1" />
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
