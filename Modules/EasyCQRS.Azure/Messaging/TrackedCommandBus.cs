@@ -57,7 +57,7 @@ namespace EasyCQRS.Azure.Messaging
 
                 if (handler != null)
                 {
-                    await handler.AsDynamic().HandleAsync(command);
+                    await (Task) handler.AsDynamic().HandleAsync(command);
                 }
             }
             catch (Exception e)
