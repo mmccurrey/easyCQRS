@@ -8,9 +8,10 @@ using EasyCQRS.Azure;
 namespace EasyCQRS.Azure.Migrations
 {
     [DbContext(typeof(InfrastructureContext))]
-    partial class InfrastructureContextModelSnapshot : ModelSnapshot
+    [Migration("20170607180338_InfrastructureV0.1.5")]
+    partial class InfrastructureV015
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

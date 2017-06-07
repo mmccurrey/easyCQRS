@@ -12,18 +12,18 @@ namespace EasyCQRS.Azure.Messaging
     {
         internal static IQueueClient GetCommandsQueueClient(IConfigurationManager configurationManager)
         {
-            var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
-            var queueName = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.CommandsQueue");
+            var connectionString = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.ConnectionString");
+            var queueName = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.CommandsQueue");
 
             return new QueueClient(connectionString, queueName);
         }
 
         internal static ITopicClient GetEventsTopicClient(IConfigurationManager configurationManager, IServiceBusManagementClient serviceBusManagementClient)
         {
-            var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
-            var resourceGroup = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ResourceGroup");
-            var ns = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.Namespace");
-            var topicName = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.EventsTopic");
+            var connectionString = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.ConnectionString");
+            var resourceGroup = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.ResourceGroup");
+            var ns = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.Namespace");
+            var topicName = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.EventsTopic");
 
             serviceBusManagementClient.Topics.CreateOrUpdate(
                 resourceGroup,
@@ -39,10 +39,10 @@ namespace EasyCQRS.Azure.Messaging
 
         internal static ISubscriptionClient GetEventsSubscriptionClient(IConfigurationManager configurationManager, IServiceBusManagementClient serviceBusManagementClient, string subscriptionName)
         {
-            var connectionString = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ConnectionString");
-            var resourceGroup = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.ResourceGroup");
-            var ns = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.Namespace");
-            var topicName = configurationManager.GetSetting("Microsoft.Azure.ServiceBus.EventsTopic");
+            var connectionString = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.ConnectionString");
+            var resourceGroup = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.ResourceGroup");
+            var ns = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.Namespace");
+            var topicName = configurationManager.GetSetting("EasyCQRS.Infrastructure.ServiceBus.EventsTopic");
 
             serviceBusManagementClient.Subscriptions.CreateOrUpdate(
                 resourceGroup,

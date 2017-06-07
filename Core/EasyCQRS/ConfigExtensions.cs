@@ -17,6 +17,11 @@ namespace EasyCQRS
             return services.AddSingleton<ILogger, ConsoleLogger>();
         }
 
+        public static IServiceCollection UseIntegrationEventMemoryBus(this IServiceCollection services)
+        {
+            return services.AddSingleton<IIntegrationEventBus, MemoryBus>();
+        }
+
         public static IServiceCollection UseEventMemoryBus(this IServiceCollection services)
         {
             return services.AddSingleton<IEventBus, MemoryBus>();

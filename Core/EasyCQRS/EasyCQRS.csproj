@@ -55,8 +55,10 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="JsonAggregateSerializer.cs" />
+    <Compile Include="Messaging\IIntegrationEventBus.cs" />
     <Compile Include="Messaging\IEventBus.cs" />
     <Compile Include="Messaging\IEventSubscriber.cs" />
+    <Compile Include="Messaging\IntegrationEvent.cs" />
     <Compile Include="Messaging\JsonMessageSerializer.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\Event.cs" />
@@ -74,8 +76,6 @@
     <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EasyCQRS.0.1.0.nupkg" />
-    <None Include="EasyCQRS.0.1.1.nupkg" />
     <None Include="EasyCQRS.nuspec">
       <SubType>Designer</SubType>
     </None>

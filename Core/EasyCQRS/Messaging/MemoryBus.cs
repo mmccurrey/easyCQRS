@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
-    public class MemoryBus : ICommandBus, IEventBus
+    public class MemoryBus : ICommandBus, IEventBus, IIntegrationEventBus
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ILogger logger;
@@ -25,6 +25,20 @@ namespace EasyCQRS.Messaging
                 foreach (var @event in events)
                 {
                     logger.Info("[MemoryBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
+                    SendMessage(@event);
+                }
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task PublishEventsAsync(params IntegrationEvent[] events)
+        {
+            if (@events != null)
+            {
+                foreach (var @event in events)
+                {
+                    logger.Info("[MemoryBus->PublishEventsAsync] Sending integration event of type: {0}", @event.GetType().Name);
                     SendMessage(@event);
                 }
             }

@@ -20,5 +20,11 @@ namespace EasyCQRS.Tests
         {
             Assert.True(typeof(IMessage).GetTypeInfo().IsAssignableFrom(typeof(Event)));
         }
+
+        [Fact]
+        public void IntegrationEvent_IsAssignableFromIMessage()
+        {
+            Assert.True(typeof(IMessage).GetTypeInfo().IsAssignableFrom(typeof(IntegrationEvent)));
+        }
     }
 }

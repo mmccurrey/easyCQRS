@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using EasyCQRS.Azure.Config;
 
 namespace EasyCQRS
 {
@@ -23,28 +24,11 @@ namespace EasyCQRS
     {
         public static IServiceCollection UseAzureForEasyCQRS(this IServiceCollection services)
         {
-            return  services.AddDbContext<InfrastructureContext>((provider, options) =>
-                            {
-                                var configurationManager = provider.GetService<IConfigurationManager>();
-                                var connectionString = configurationManager.GetSetting("EasyCQRS.Infrastructure.ConnectionString");
-
-                                options.UseSqlServer(connectionString,
-                                                     sqlServerOptionsAction: sqlOptions =>
-                                                     {
-                                                         sqlOptions.MigrationsAssembly(typeof(InfrastructureContext).GetTypeInfo().Assembly.GetName().Name);
-                                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                                     });
-                                
-                                options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-                            })
-                            .AddTransient<ServiceBus>()
-                            .AddTransient<IEventBus, IntegrationEventBus>(p =>
-                            {
-                                var logger = p.GetService<ILogger>();
-                                var serviceBus = p.GetService<ServiceBus>();
-                                var memoryBus = new MemoryBus(p, logger);
-                                return new IntegrationEventBus(memoryBus, serviceBus);
-                            })
+            return  services
+                            .AddTransient<IConfigurationManager, DefaultConfigurationManager>()
+                            .AddTransient<ICommandBus, TrackedCommandBus>()
+                            .AddTransient<IIntegrationEventBus, ServiceBus>() 
+                            .AddTransient<IEventBus, ServiceBus>()
                             .AddTransient<IEventSubscriber, ServiceBusEventSubscriber>()
                             .AddTransient<IEventStore, EventStore>()
                             .AddTransient<ISagaStore, SagaStore>()
@@ -81,6 +65,20 @@ namespace EasyCQRS
                                 var mgmtClient = p.GetService<IServiceBusManagementClient>();
 
                                 return ServiceBusHelper.GetEventsTopicClient(configurationManager, mgmtClient);
+                            })
+                            .AddDbContext<InfrastructureContext>((provider, options) =>
+                            {
+                                var configurationManager = provider.GetService<IConfigurationManager>();
+                                var connectionString = configurationManager.GetSetting("EasyCQRS.Infrastructure.ConnectionString");
+
+                                options.UseSqlServer(connectionString,
+                                                     sqlServerOptionsAction: sqlOptions =>
+                                                     {
+                                                         sqlOptions.MigrationsAssembly(typeof(InfrastructureContext).GetTypeInfo().Assembly.GetName().Name);
+                                                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                                     });
+
+                                options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
                             });
         }
     }

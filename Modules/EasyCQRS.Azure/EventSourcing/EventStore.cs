@@ -103,6 +103,7 @@ namespace EasyCQRS.Azure.EventSourcing
                 SourceType = aggregateTypeName,
                 Type = @event.GetType().AssemblyQualifiedName,
                 FullName = @event.GetType().FullName,
+                ExecutedBy = @event.ExecutedBy,
                 Payload = messageSerializer.Serialize(@event)
             };
 

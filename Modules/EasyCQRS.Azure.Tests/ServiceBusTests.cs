@@ -34,9 +34,9 @@ namespace EasyCQRS.Azure.Tests
                 Assert.IsAssignableFrom<IEventBus>(sut);
             }
         }
-
+        
         [Fact]
-        public void ServiceBus_IsAssignableFromICommandBus()
+        public void ServiceBus_IsAssignableFromIIntegrationEventBus()
         {
             var options = SetupContext();
 
@@ -50,79 +50,7 @@ namespace EasyCQRS.Azure.Tests
                                             Mock.Of<ILogger>(),
                                             context);
 
-                Assert.IsAssignableFrom<ICommandBus>(sut);
-            }
-        }
-
-        [Fact]
-        public async Task ServiceBus_SendCommandAsyncPersistsChangesToContext()
-        {
-            var command = new FakeCommand();
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
-                                         Mock.Of<IQueueClient>(),
-                                         Mock.Of<ITopicClient>(),
-                                         Mock.Of<ILogger>(),
-                                         context);
-
-
-                await sut.SendCommandAsync(command);
-            }
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var commandEntity = await context.Commands.FindAsync(command.CommandId);
-
-                Assert.NotNull(commandEntity);
-                Assert.Equal(command.CommandId, commandEntity.Id);
-                Assert.Equal(command.CorrelationId, commandEntity.CorrelationId);
-            }
-        }
-
-        [Fact]
-        public async Task ServiceBus_SendCommandAsyncInvokesSerializeOnIMessageSerializer()
-        {
-            var command = new FakeCommand();
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var mockSerializer = new Mock<IMessageSerializer>();
-                var sut = new ServiceBus(mockSerializer.Object,
-                                         Mock.Of<IQueueClient>(),
-                                         Mock.Of<ITopicClient>(),
-                                         Mock.Of<ILogger>(),
-                                         context);
-
-
-                await sut.SendCommandAsync(command);
-
-                mockSerializer.Verify(s => s.Serialize(command));
-            }
-        }
-
-        [Fact]
-        public async Task ServiceBus_SendCommandAsyncInvokesSendAsyncOnIQueueClient()
-        {
-            var command = new FakeCommand();
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var mockClient = new Mock<IQueueClient>();
-                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
-                                         mockClient.Object,
-                                         Mock.Of<ITopicClient>(),
-                                         Mock.Of<ILogger>(),
-                                         context);
-
-
-                await sut.SendCommandAsync(command);
-
-                mockClient.Verify(s => s.SendAsync(It.IsAny<Message>()));
+                Assert.IsAssignableFrom<IIntegrationEventBus>(sut);
             }
         }
 
@@ -168,7 +96,80 @@ namespace EasyCQRS.Azure.Tests
 
                 mockClient.Verify(s => s.SendAsync(It.IsAny<Message>()));
             }
-        }        
+        }
+
+        [Fact]
+        public async Task ServiceBus_PublishIntegrationEventsAsyncPersistsChangesToContext()
+        {
+            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var options = SetupContext();
+
+            using (var context = new InfrastructureContext(options))
+            {
+                var mockSerializer = new Mock<IMessageSerializer>();
+                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
+                                         Mock.Of<IQueueClient>(),
+                                         Mock.Of<ITopicClient>(),
+                                         Mock.Of<ILogger>(),
+                                         context);
+
+
+                await sut.PublishEventsAsync(@event);
+            }
+
+            using (var context = new InfrastructureContext(options))
+            {
+                var eventEntity = await context.IntegrationEvents.FindAsync(@event.EventId);
+
+                Assert.NotNull(eventEntity);
+                Assert.Equal(@event.EventId, eventEntity.Id);
+                Assert.Equal(@event.CorrelationId, eventEntity.CorrelationId);
+            }
+        }
+
+        [Fact]
+        public async Task ServiceBus_PublishIntegrationEventsAsyncInvokesSerializeOnIMessageSerializer()
+        {
+            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var options = SetupContext();
+
+            using (var context = new InfrastructureContext(options))
+            {
+                var mockSerializer = new Mock<IMessageSerializer>();
+                var sut = new ServiceBus(mockSerializer.Object,
+                                         Mock.Of<IQueueClient>(),
+                                         Mock.Of<ITopicClient>(),
+                                         Mock.Of<ILogger>(),
+                                         context);
+
+
+                await sut.PublishEventsAsync(@event);
+
+                mockSerializer.Verify(s => s.Serialize<IntegrationEvent>(@event));
+            }
+        }
+
+        [Fact]
+        public async Task ServiceBus_PublishIntegrationEventsAsyncInvokesSendAsyncOnIQueueClient()
+        {
+            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var options = SetupContext();
+
+            using (var context = new InfrastructureContext(options))
+            {
+                var mockClient = new Mock<ITopicClient>();
+                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
+                                         Mock.Of<IQueueClient>(),
+                                         mockClient.Object,
+                                         Mock.Of<ILogger>(),
+                                         context);
+
+
+                await sut.PublishEventsAsync(@event);
+
+                mockClient.Verify(s => s.SendAsync(It.IsAny<Message>()));
+            }
+        }
 
         private DbContextOptions<InfrastructureContext> SetupContext()
         {

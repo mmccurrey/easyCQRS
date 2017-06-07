@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.Messaging
 {
-    internal class ServiceBus : ICommandBus, IEventBus
+    internal class ServiceBus : IEventBus, IIntegrationEventBus
     {
         private readonly IMessageSerializer messageSerializer;
         private readonly ILogger logger;
@@ -18,11 +18,11 @@ namespace EasyCQRS.Azure.Messaging
         private readonly ITopicClient topicClient;
         private readonly InfrastructureContext db;
 
-        public ServiceBus(                        
+        public ServiceBus(
             IMessageSerializer messageSerializer,
             IQueueClient queueClient,
             ITopicClient topicClient,
-            ILogger logger, 
+            ILogger logger,
             InfrastructureContext db)
         {
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
@@ -33,78 +33,66 @@ namespace EasyCQRS.Azure.Messaging
 
         }
 
-        public async Task SendCommandAsync<T>(T command) where T : Command
-        {
-            logger.Info("[ServiceBus->SendCommandAsync] Sending command of type: {0}", typeof(T).Name);
-
-            var entity = new CommandEntity
-            {
-                Id = command.CommandId,
-                CorrelationId = command.CorrelationId,
-                ExecutedBy = command.ExecutedBy,
-                Type = command.GetType().AssemblyQualifiedName,
-                FullName = command.GetType().FullName,
-                ScheduledAt = DateTimeOffset.UtcNow,                
-                Payload = messageSerializer.Serialize(command)                
-            };
-
-            db.Commands.Add(entity);
-
-            db.SaveChanges();
-
-            try
-            {
-                var payload = messageSerializer.Serialize(command);
-                var brokeredMessage = new Message(payload);
-
-                brokeredMessage.UserProperties["CorrelationId"] = command.CorrelationId;
-                brokeredMessage.UserProperties["Name"] = command.GetType().Name;
-                brokeredMessage.UserProperties["FullName"] = command.GetType().FullName;
-                brokeredMessage.UserProperties["Namespace"] = command.GetType().Namespace;
-                brokeredMessage.UserProperties["Type"] = command.GetType().AssemblyQualifiedName;
-                brokeredMessage.UserProperties["Command"] = true;                 
-
-                await queueClient.SendAsync(brokeredMessage);
-
-                entity.Success = true;
-            }
-            catch (Exception e)
-            {
-                entity.ErrorDescription = e.ToString();
-
-                throw e;
-            }
-            finally
-            {
-                entity.Executed = true;
-                entity.ExecutedAt = DateTimeOffset.UtcNow;
-                db.SaveChanges();
-            }
-        }
 
         public async Task PublishEventsAsync(params Event[] events)
         {
-            if(events != null)
+            if (events != null)
             {
-                foreach(var @event in events)
+                foreach (var @event in events)
                 {
                     logger.Info("[ServiceBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
 
                     var payload = messageSerializer.Serialize(@event);
                     var brokeredMessage = new Message(payload);
 
-                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;                   
+                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
                     brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
                     brokeredMessage.UserProperties["FullName"] = @event.GetType().FullName;
                     brokeredMessage.UserProperties["Namespace"] = @event.GetType().Namespace;
                     brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
                     brokeredMessage.UserProperties["Event"] = true;
+                    brokeredMessage.UserProperties["IntegrationEvent"] = false;
 
                     await topicClient.SendAsync(brokeredMessage);
                 }
             }
         }
 
-        
+        public async Task PublishEventsAsync(params IntegrationEvent[] events)
+        {
+            if (events != null)
+            {
+                foreach (var @event in events)
+                {
+                    var entity = new IntegrationEventEntity
+                    {
+                        Id = @event.EventId,
+                        CorrelationId = @event.CorrelationId,
+                        ExecutedBy = @event.ExecutedBy,
+                        Type = @event.GetType().AssemblyQualifiedName,
+                        FullName = @event.GetType().FullName,
+                        Date = @event.Timestamp
+                    };
+
+                    db.IntegrationEvents.Add(entity);
+
+                    db.SaveChanges();
+                    logger.Info("[ServiceBus->PublishEventsAsync] Sending integration event of type: {0}", @event.GetType().Name);
+
+                    var payload = messageSerializer.Serialize(@event);
+                    var brokeredMessage = new Message(payload);
+
+                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
+                    brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
+                    brokeredMessage.UserProperties["FullName"] = @event.GetType().FullName;
+                    brokeredMessage.UserProperties["Namespace"] = @event.GetType().Namespace;
+                    brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
+                    brokeredMessage.UserProperties["Event"] = false;
+                    brokeredMessage.UserProperties["IntegrationEvent"] = true;
+
+                    await topicClient.SendAsync(brokeredMessage);
+                }
+            }
+        }
     }
 }

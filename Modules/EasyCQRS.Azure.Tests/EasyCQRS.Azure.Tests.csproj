@@ -9,6 +9,7 @@
     <Compile Include="..\..\Core\EasyCQRS.Tests\FakeAggregate.cs" Link="FakeAggregate.cs" />
     <Compile Include="..\..\Core\EasyCQRS.Tests\FakeCommand.cs" Link="FakeCommand.cs" />
     <Compile Include="..\..\Core\EasyCQRS.Tests\FakeEvent.cs" Link="FakeEvent.cs" />
+    <Compile Include="..\..\Core\EasyCQRS.Tests\FakeIntegrationEvent.cs" Link="FakeIntegrationEvent.cs" />
     <Compile Include="..\..\Core\EasyCQRS.Tests\FakeSaga.cs" Link="FakeSaga.cs" />
   </ItemGroup>
 

@@ -9,26 +9,21 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure
 {   
-    [Table("Events")]
-    internal class EventEntity
+    [Table("IntegrationEvents")]
+    internal class IntegrationEventEntity
     {        
-        [Key, Column(Order = 2)]
-        public Guid AggregateId { get; set; }
+        [Key, Column(Order = 1)]
+        public Guid Id { get; set; }
 
         public Guid CorrelationId { get; set; }
 
-        [Key, Column(Order = 3)]
-        public long Version { get; set; }
-
-        [Key, Column(Order = 1), MaxLength(300)]
-        public string SourceType { get; set; }
-
         public DateTimeOffset Date { get; set; }
+
+        public Guid? ExecutedBy { get; set; }
+
         public string Type { get; set; }
 
         public string FullName { get; set; }
-
-        public Guid? ExecutedBy { get; set; }
 
         [MaxLength(Int32.MaxValue)]
         public byte[] Payload { get; set; }

@@ -12,6 +12,7 @@ namespace EasyCQRS.Azure
         }
 
         public DbSet<EventEntity> Events { get; set; }
+        public DbSet<IntegrationEventEntity> IntegrationEvents { get; set; }
         public DbSet<CommandEntity> Commands { get; set; }
         public DbSet<SagaEntity> Sagas { get; set; }
         public DbSet<SnapshotEntity> Snapshots { get; set; }
