@@ -74,23 +74,26 @@ namespace EasyCQRS.Azure.Messaging
                     var handlerType = typeof(IHandler<>).MakeGenericType(@event.GetType());
                     var handlers = serviceProvider.GetServices(handlerType);
 
-                    foreach(var handler in handlers)
+                    if (handlers != null)
                     {
-                        try
+                        foreach (var handler in handlers)
                         {
-                            dynamic dHandler = handler.AsDynamic();
+                            try
+                            {
+                                dynamic dHandler = handler.AsDynamic();
 
-                            dHandler.HandleAsync(@event);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Warning(
-                                string.Format(
-                                    "Cannot process event of type: {0} with handler: {1}. Message: {2}", 
-                                    @event.GetType().Name, 
-                                    handler.GetType().Name,
-                                    ex.Message
-                                    ));
+                                dHandler.HandleAsync(@event);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Warning(
+                                    string.Format(
+                                        "Cannot process event of type: {0} with handler: {1}. Message: {2}",
+                                        @event.GetType().Name,
+                                        handler.GetType().Name,
+                                        ex.Message
+                                        ));
+                            }
                         }
                     }
                 },
