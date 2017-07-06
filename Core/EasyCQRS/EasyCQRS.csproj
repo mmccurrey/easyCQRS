@@ -70,12 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Serialization\NonPublicPropertiesContractResolver.cs" />
-    <Compile Include="ValueObjects\Address.cs" />
-    <Compile Include="ValueObjects\Contact.cs" />
-    <Compile Include="ValueObjects\EmailAddress.cs" />
-    <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="EasyCQRS.0.1.2.6.nupkg" />
     <None Include="EasyCQRS.nuspec">
       <SubType>Designer</SubType>
     </None>
