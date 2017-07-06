@@ -15,7 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{329DF44C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyCQRS.Azure", "Modules\EasyCQRS.Azure\EasyCQRS.Azure.csproj", "{C9DE1AE0-BB4E-4AFC-9AA6-E21EAD43D019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Extensions", "Modules\EasyCQRS.Extensions\EasyCQRS.Extensions.csproj", "{2BB5844E-4269-41F8-844D-20DF0E92262D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Extensions.Primitives", "Modules\EasyCQRS.Extensions.Primitives\EasyCQRS.Extensions.Primitives.csproj", "{2BB5844E-4269-41F8-844D-20DF0E92262D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Extensions.HealthCheck", "Modules\EasyCQRS.Extensions.HealthCheck\EasyCQRS.Extensions.HealthCheck.csproj", "{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyCQRS.Extensions.EntityFrameworkCore", "Modules\EasyCQRS.Extensions.EntityFrameworkCore\EasyCQRS.Extensions.EntityFrameworkCore.csproj", "{9124ECCC-2B4C-4635-97F2-89981DDB1672}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,14 @@ Global
 		{2BB5844E-4269-41F8-844D-20DF0E92262D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BB5844E-4269-41F8-844D-20DF0E92262D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BB5844E-4269-41F8-844D-20DF0E92262D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9124ECCC-2B4C-4635-97F2-89981DDB1672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9124ECCC-2B4C-4635-97F2-89981DDB1672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9124ECCC-2B4C-4635-97F2-89981DDB1672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9124ECCC-2B4C-4635-97F2-89981DDB1672}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +66,7 @@ Global
 		{329DF44C-3D45-40A0-B57C-D56F54805BE2} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 		{C9DE1AE0-BB4E-4AFC-9AA6-E21EAD43D019} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 		{2BB5844E-4269-41F8-844D-20DF0E92262D} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
+		{6C8C4F47-EFB5-42EA-9B08-55CB33F96B76} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
+		{9124ECCC-2B4C-4635-97F2-89981DDB1672} = {17BB7ED6-8570-4BDF-96C6-B1557476E834}
 	EndGlobalSection
 EndGlobal

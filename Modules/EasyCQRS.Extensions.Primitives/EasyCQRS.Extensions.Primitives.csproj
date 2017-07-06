@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Version>0.1.2.6</Version>
+    <Authors>Kellerman Rivero</Authors>
+    <Description>Useful extensions for applications made using EasyCQRS</Description>
+    <Product>EasyCQRS Primitives Extensions Module</Product>
+    <Company>Kellerman Rivero</Company>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EasyCQRS" Version="0.1.2.6" />
+  </ItemGroup>
+
+</Project>
