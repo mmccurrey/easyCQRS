@@ -29,7 +29,7 @@ namespace EasyCQRS
                             .AddTransient<ICommandBus, TrackedCommandBus>()
                             .AddTransient<IIntegrationEventBus, ServiceBus>() 
                             .AddTransient<IEventBus, ServiceBus>()
-                            .AddTransient<IEventSubscriber, ServiceBusEventSubscriber>()
+                            .AddTransient<IMessageSubscriber, ServiceBusMessageSubscriber>()
                             .AddTransient<IEventStore, EventStore>()
                             .AddTransient<ISagaStore, SagaStore>()
                             .AddTransient<IServiceBusManagementClient>((p) =>

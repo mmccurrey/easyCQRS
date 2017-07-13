@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.Messaging
 {
-    public class ServiceBusEventSubscriber : IEventSubscriber
+    public class ServiceBusMessageSubscriber : IMessageSubscriber
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IServiceBusManagementClient serviceBusManagementClient;
@@ -22,7 +23,7 @@ namespace EasyCQRS.Azure.Messaging
         private readonly IConfigurationManager configurationManager;
         private readonly ILogger logger;
 
-        public ServiceBusEventSubscriber(
+        public ServiceBusMessageSubscriber(
             IServiceProvider serviceProvider,
             IServiceBusManagementClient serviceBusManagementClient,
             IMessageSerializer messageSerializer,
@@ -36,21 +37,22 @@ namespace EasyCQRS.Azure.Messaging
             this.logger = logger ?? throw new ArgumentNullException("logger");
         }
 
-        public IDisposable Subscribe([CallerMemberName] string name = null)
+        public IDisposable Subscribe<TMessage>([CallerMemberName] string name = null) where TMessage: class, IMessage
         {
             var client = ServiceBusHelper.GetEventsSubscriptionClient(configurationManager, serviceBusManagementClient, name);
-            var observable = Observable.Create<Event>(observer => {
+            var observable = Observable.Create<TMessage>(observer => {
 
                                                            client.RegisterMessageHandler((message, cancellationToken) =>
                                                            {
                                                                try
                                                                {
-                                                                   var eventType = Type.GetType(message.UserProperties["Type"] as string);
+                                                                   var parentType = typeof(TMessage);
+                                                                   var messageType = Type.GetType(message.UserProperties["Type"] as string);
 
-                                                                   if (eventType != null)
+                                                                   if (messageType != null && parentType.IsAssignableFrom(messageType))
                                                                    {
-                                                                       var @event = messageSerializer.Deserialize<Event>(
-                                                                           eventType, message.Body);
+                                                                       var @event = messageSerializer.Deserialize<TMessage>(
+                                                                           messageType, message.Body);
 
                                                                        observer.OnNext(@event);
                                                                    }
@@ -69,11 +71,9 @@ namespace EasyCQRS.Azure.Messaging
                                                       .RefCount();
 
             return observable.Subscribe(
-                @event =>
+                message =>
                 {
-                    var handlerType = typeof(IHandler<>).MakeGenericType(@event.GetType());
-                    var handlers = serviceProvider.GetServices(handlerType);
-
+                    var handlers = GetHandlers(serviceProvider, message.GetType());
                     if (handlers != null)
                     {
                         foreach (var handler in handlers)
@@ -82,14 +82,14 @@ namespace EasyCQRS.Azure.Messaging
                             {
                                 dynamic dHandler = handler.AsDynamic();
 
-                                dHandler.HandleAsync(@event);
+                                dHandler.HandleAsync(message);
                             }
                             catch (Exception ex)
                             {
                                 logger.Warning(
                                     string.Format(
-                                        "Cannot process event of type: {0} with handler: {1}. Message: {2}",
-                                        @event.GetType().Name,
+                                        "Cannot process message of type: {0} with handler: {1}. Message: {2}",
+                                        message.GetType().Name,
                                         handler.GetType().Name,
                                         ex.Message
                                         ));
@@ -99,6 +99,24 @@ namespace EasyCQRS.Azure.Messaging
                 },
                 exception => logger.Error(exception.ToString()), //OnError
                 () => logger.Info($"Service bus subscription {name} completed")); //OnComplete
+        }
+
+        private IEnumerable<object> GetHandlers(IServiceProvider serviceProvider, Type messageType)
+        {
+            var handlers = new List<object>();
+            do
+            {
+                var handlerType = typeof(IHandler<>).MakeGenericType(messageType);
+                var resolvedHandlers = serviceProvider.GetServices(handlerType);
+
+                if(resolvedHandlers != null)
+                {
+                    handlers.AddRange(resolvedHandlers);
+                }
+            }
+            while (messageType != null && messageType != typeof(EasyCQRS.Messaging.Message));
+
+            return handlers;
         }
     }
 }

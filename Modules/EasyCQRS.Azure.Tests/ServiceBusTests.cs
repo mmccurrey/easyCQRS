@@ -94,7 +94,7 @@ namespace EasyCQRS.Azure.Tests
 
                 await sut.PublishEventsAsync(@event);
 
-                mockClient.Verify(s => s.SendAsync(It.IsAny<Message>()));
+                mockClient.Verify(s => s.SendAsync(It.IsAny<Microsoft.Azure.ServiceBus.Message>()));
             }
         }
 
@@ -167,7 +167,7 @@ namespace EasyCQRS.Azure.Tests
 
                 await sut.PublishEventsAsync(@event);
 
-                mockClient.Verify(s => s.SendAsync(It.IsAny<Message>()));
+                mockClient.Verify(s => s.SendAsync(It.IsAny<Microsoft.Azure.ServiceBus.Message>()));
             }
         }
 

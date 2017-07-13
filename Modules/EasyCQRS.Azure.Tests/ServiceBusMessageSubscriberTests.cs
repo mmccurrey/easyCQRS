@@ -10,19 +10,19 @@ using Xunit;
 
 namespace EasyCQRS.Azure.Tests
 {
-    public class ServiceBusEventSubscriberTests
+    public class ServiceBusMessageSubscriberTests
     {
         [Fact]
         public void ServiceBusEventSubscriber_IsAssignableFromIEventSubscriber()
         {
-            var sut = new ServiceBusEventSubscriber(
+            var sut = new ServiceBusMessageSubscriber(
                                     Mock.Of<IServiceProvider>(),
                                     Mock.Of<IServiceBusManagementClient>(),
                                     Mock.Of<IMessageSerializer>(),
                                     Mock.Of<IConfigurationManager>(),
                                     Mock.Of<ILogger>());
 
-            Assert.IsAssignableFrom<IEventSubscriber>(sut);
+            Assert.IsAssignableFrom<IMessageSubscriber>(sut);
         }
     }
 }

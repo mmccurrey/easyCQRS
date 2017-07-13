@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
-    public abstract class Command : IMessage
+    public abstract class Command : Message
     {
         public Guid CommandId { get; protected set; }
         public Guid CorrelationId { get; set; }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Messaging
 {
-    public interface IEventSubscriber
+    public interface IMessageSubscriber
     {
-        IDisposable Subscribe([CallerMemberName] string name = null);
+        IDisposable Subscribe<T>([CallerMemberName] string name = null) where T: class, IMessage;
     }
 }

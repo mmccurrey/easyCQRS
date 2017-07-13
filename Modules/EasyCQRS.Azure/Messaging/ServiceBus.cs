@@ -43,7 +43,7 @@ namespace EasyCQRS.Azure.Messaging
                     logger.Info("[ServiceBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
 
                     var payload = messageSerializer.Serialize(@event);
-                    var brokeredMessage = new Message(payload);
+                    var brokeredMessage = new Microsoft.Azure.ServiceBus.Message(payload);
 
                     brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
                     brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
@@ -80,7 +80,7 @@ namespace EasyCQRS.Azure.Messaging
                     logger.Info("[ServiceBus->PublishEventsAsync] Sending integration event of type: {0}", @event.GetType().Name);
 
                     var payload = messageSerializer.Serialize(@event);
-                    var brokeredMessage = new Message(payload);
+                    var brokeredMessage = new Microsoft.Azure.ServiceBus.Message(payload);
 
                     brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
                     brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
