@@ -44,17 +44,28 @@ namespace EasyCQRS.Azure.Messaging
 
                                                            client.RegisterMessageHandler((message, cancellationToken) =>
                                                            {
+                                                               logger.Info("Incoming event:");
                                                                try
-                                                               {
+                                                               {                                                                  
                                                                    var parentType = typeof(TMessage);
-                                                                   var messageType = Type.GetType(message.UserProperties["Type"] as string);
+                                                                   var messageTypeName =
+                                                                       message.UserProperties["Type"] as string;
+                                                                   var messageType = Type.GetType(messageTypeName);
+                                                                   
+                                                                   logger.Info($"Type: {messageTypeName}");
 
-                                                                   if (messageType != null && parentType.IsAssignableFrom(messageType))
+                                                                   if (messageType != null &&
+                                                                       parentType.IsAssignableFrom(messageType))
                                                                    {
-                                                                       var @event = messageSerializer.Deserialize<TMessage>(
-                                                                           messageType, message.Body);
+                                                                       var @event = messageSerializer
+                                                                           .Deserialize<TMessage>(
+                                                                               messageType, message.Body);
 
                                                                        observer.OnNext(@event);
+                                                                   }
+                                                                   else
+                                                                   {                                                                       
+                                                                       logger.Info($"Cannot found the assembly for Event: {messageTypeName}");
                                                                    }
                                                                }
                                                                catch
@@ -73,6 +84,7 @@ namespace EasyCQRS.Azure.Messaging
             return observable.Subscribe(
                 message =>
                 {
+                    logger.Info("Finding handlers");
                     var handlers = GetHandlers(serviceProvider, message.GetType());
                     if (handlers != null)
                     {
@@ -106,6 +118,7 @@ namespace EasyCQRS.Azure.Messaging
             var handlers = new List<object>();
             do
             {
+                logger.Info($"Finding handlers for {messageType.Name}");
                 var handlerType = typeof(IHandler<>).MakeGenericType(messageType);
                 var resolvedHandlers = serviceProvider.GetServices(handlerType);
 
@@ -113,9 +126,13 @@ namespace EasyCQRS.Azure.Messaging
                 {
                     handlers.AddRange(resolvedHandlers);
                 }
+
+                messageType = messageType.GetTypeInfo().BaseType;
             }
             while (messageType != null && messageType != typeof(EasyCQRS.Messaging.Message));
 
+            logger.Info($"Handlers Found: {handlers.Count}");
+            
             return handlers;
         }
     }
