@@ -73,7 +73,6 @@
     <Compile Include="Serialization\NonPublicPropertiesContractResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EasyCQRS.0.1.2.6.nupkg" />
     <None Include="EasyCQRS.nuspec">
       <SubType>Designer</SubType>
     </None>
