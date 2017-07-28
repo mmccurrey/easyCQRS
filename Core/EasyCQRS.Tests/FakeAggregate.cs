@@ -23,7 +23,7 @@ namespace EasyCQRS.Tests
 
         public void Fire(string value)
         {
-            ApplyChange(new FakeEvent(Guid.NewGuid(), this.Id, this.Version + 1, null, value));
+            ApplyChange(new FakeEvent(this.Id, this.Version + 1, value));
         }
 
         protected void Apply(FakeEvent @event)

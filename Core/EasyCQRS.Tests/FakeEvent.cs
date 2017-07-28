@@ -12,8 +12,8 @@ namespace EasyCQRS.Tests
         protected FakeEvent()
             : base() { }
 
-        public FakeEvent(Guid correlationId, Guid aggregateId, long version, Guid? executedBy, string value)
-            : base(correlationId, aggregateId, version, executedBy)
+        public FakeEvent(Guid aggregateId, long version, string value)
+            : base(aggregateId, version)
         {
             Value = value;
         }

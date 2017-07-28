@@ -13,13 +13,13 @@ namespace EasyCQRS.Azure
     internal class IntegrationEventEntity
     {        
         [Key, Column(Order = 1)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
         public DateTimeOffset Date { get; set; }
 
-        public Guid? ExecutedBy { get; set; }
+        public string ExecutedBy { get; set; }
 
         public string Type { get; set; }
 

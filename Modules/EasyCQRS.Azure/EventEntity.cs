@@ -15,7 +15,7 @@ namespace EasyCQRS.Azure
         [Key, Column(Order = 2)]
         public Guid AggregateId { get; set; }
 
-        public Guid CorrelationId { get; set; }
+        public string CorrelationId { get; set; }
 
         [Key, Column(Order = 3)]
         public long Version { get; set; }
@@ -28,7 +28,7 @@ namespace EasyCQRS.Azure
 
         public string FullName { get; set; }
 
-        public Guid? ExecutedBy { get; set; }
+        public string ExecutedBy { get; set; }
 
         [MaxLength(Int32.MaxValue)]
         public byte[] Payload { get; set; }

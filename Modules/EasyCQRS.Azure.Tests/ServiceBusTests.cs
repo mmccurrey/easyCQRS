@@ -2,6 +2,7 @@
 using EasyCQRS.Diagnostics;
 using EasyCQRS.Messaging;
 using EasyCQRS.Tests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
@@ -18,24 +19,6 @@ namespace EasyCQRS.Azure.Tests
     public class ServiceBusTests
     {
         [Fact]
-        public void ServiceBus_IsAssignableFromIEventBus()
-        {
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options)) {
-
-                var sut = new ServiceBus(
-                                            Mock.Of<IMessageSerializer>(),
-                                            Mock.Of<IQueueClient>(), 
-                                            Mock.Of<ITopicClient>(),
-                                            Mock.Of<ILogger>(),
-                                            context);
-
-                Assert.IsAssignableFrom<IEventBus>(sut);
-            }
-        }
-        
-        [Fact]
         public void ServiceBus_IsAssignableFromIIntegrationEventBus()
         {
             var options = SetupContext();
@@ -45,6 +28,7 @@ namespace EasyCQRS.Azure.Tests
 
                 var sut = new ServiceBus(
                                             Mock.Of<IMessageSerializer>(),
+                                            Mock.Of<IHttpContextAccessor>(),
                                             Mock.Of<IQueueClient>(),
                                             Mock.Of<ITopicClient>(),
                                             Mock.Of<ILogger>(),
@@ -52,62 +36,20 @@ namespace EasyCQRS.Azure.Tests
 
                 Assert.IsAssignableFrom<IIntegrationEventBus>(sut);
             }
-        }
-
-        [Fact]
-        public async Task ServiceBus_PublishEventsAsyncInvokesSerializeOnIMessageSerializer()
-        {
-            var @event = new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Fake Value");
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var mockSerializer = new Mock<IMessageSerializer>();
-                var sut = new ServiceBus(mockSerializer.Object,
-                                         Mock.Of<IQueueClient>(),
-                                         Mock.Of<ITopicClient>(),
-                                         Mock.Of<ILogger>(),
-                                         context);
-
-
-                await sut.PublishEventsAsync(@event);
-
-                mockSerializer.Verify(s => s.Serialize<Event>(@event));
-            }
-        }
-
-        [Fact]
-        public async Task ServiceBus_PublishEventsAsyncInvokesSendAsyncOnIQueueClient()
-        {
-            var @event = new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Fake Value");
-            var options = SetupContext();
-
-            using (var context = new InfrastructureContext(options))
-            {
-                var mockClient = new Mock<ITopicClient>();
-                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
-                                         Mock.Of<IQueueClient>(),
-                                         mockClient.Object,
-                                         Mock.Of<ILogger>(),
-                                         context);
-
-
-                await sut.PublishEventsAsync(@event);
-
-                mockClient.Verify(s => s.SendAsync(It.IsAny<Microsoft.Azure.ServiceBus.Message>()));
-            }
-        }
+        }        
 
         [Fact]
         public async Task ServiceBus_PublishIntegrationEventsAsyncPersistsChangesToContext()
         {
-            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var @event = new FakeIntegrationEvent("Fake Value");
             var options = SetupContext();
 
             using (var context = new InfrastructureContext(options))
             {
                 var mockSerializer = new Mock<IMessageSerializer>();
-                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
+                var sut = new ServiceBus(
+                                         Mock.Of<IMessageSerializer>(),
+                                         Mock.Of<IHttpContextAccessor>(),
                                          Mock.Of<IQueueClient>(),
                                          Mock.Of<ITopicClient>(),
                                          Mock.Of<ILogger>(),
@@ -119,24 +61,24 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var eventEntity = await context.IntegrationEvents.FindAsync(@event.EventId);
+                var eventEntity = await context.IntegrationEvents.FindAsync(@event.MessageId);
 
                 Assert.NotNull(eventEntity);
-                Assert.Equal(@event.EventId, eventEntity.Id);
-                Assert.Equal(@event.CorrelationId, eventEntity.CorrelationId);
+                Assert.Equal(@event.MessageId, eventEntity.Id);
             }
         }
 
         [Fact]
         public async Task ServiceBus_PublishIntegrationEventsAsyncInvokesSerializeOnIMessageSerializer()
         {
-            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var @event = new FakeIntegrationEvent("Fake Value");
             var options = SetupContext();
 
             using (var context = new InfrastructureContext(options))
             {
                 var mockSerializer = new Mock<IMessageSerializer>();
                 var sut = new ServiceBus(mockSerializer.Object,
+                                         Mock.Of<IHttpContextAccessor>(),
                                          Mock.Of<IQueueClient>(),
                                          Mock.Of<ITopicClient>(),
                                          Mock.Of<ILogger>(),
@@ -152,13 +94,15 @@ namespace EasyCQRS.Azure.Tests
         [Fact]
         public async Task ServiceBus_PublishIntegrationEventsAsyncInvokesSendAsyncOnIQueueClient()
         {
-            var @event = new FakeIntegrationEvent(Guid.NewGuid(), null, "Fake Value");
+            var @event = new FakeIntegrationEvent("Fake Value");
             var options = SetupContext();
 
             using (var context = new InfrastructureContext(options))
             {
                 var mockClient = new Mock<ITopicClient>();
-                var sut = new ServiceBus(Mock.Of<IMessageSerializer>(),
+                var sut = new ServiceBus(
+                                         Mock.Of<IMessageSerializer>(),
+                                         Mock.Of<IHttpContextAccessor>(),
                                          Mock.Of<IQueueClient>(),
                                          mockClient.Object,
                                          Mock.Of<ILogger>(),

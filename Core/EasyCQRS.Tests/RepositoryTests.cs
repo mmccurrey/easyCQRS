@@ -109,7 +109,7 @@ namespace EasyCQRS.Tests
         public async Task OnFindAsync_BuildAggregateFromEventStoreAndSnapshotStore()
         {
             var fakeAggregate = new FakeAggregate(Guid.Empty);
-            var fakeEvent = new FakeEvent(Guid.NewGuid(), Guid.Empty, 2, null, "Fake Value");
+            var fakeEvent = new FakeEvent(Guid.Empty, 1, "Fake Value");
 
             var mockEventStore = new Mock<IEventStore>();
             var mockSnapshotStore = new Mock<ISnapshotStore>();
@@ -137,7 +137,7 @@ namespace EasyCQRS.Tests
         [Fact]
         public async Task OnFindAsync_WithVersion_BuildAggregateFromEventStore()
         {
-            var fakeEvent = new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Version 1");
+            var fakeEvent = new FakeEvent(Guid.Empty, 1, "Version 1");
             var mockEventStore = new Mock<IEventStore>();
 
             mockEventStore.Setup(t => t.LoadByMaxVersionAsync<FakeAggregate>(Guid.Empty, 1)).ReturnsAsync(Enumerable.Repeat(fakeEvent, 1));
@@ -181,9 +181,9 @@ namespace EasyCQRS.Tests
         {
             var fakeAggregate = new FakeAggregate(Guid.Empty);
 
-            var fakeEvent1 = new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Version 1");
-            var fakeEvent2 = new FakeEvent(Guid.NewGuid(), Guid.Empty, 2, null, "Version 2");
-            var fakeEvent3 = new FakeEvent(Guid.NewGuid(), Guid.Empty, 3, null, "Version 3");
+            var fakeEvent1 = new FakeEvent(Guid.Empty, 1, "Version 1");
+            var fakeEvent2 = new FakeEvent(Guid.Empty, 2, "Version 2");
+            var fakeEvent3 = new FakeEvent(Guid.Empty, 3, "Version 3");
 
             fakeAggregate.Hydrate(new Event[] { fakeEvent1 });
 

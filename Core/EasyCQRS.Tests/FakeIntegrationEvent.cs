@@ -12,8 +12,8 @@ namespace EasyCQRS.Tests
         protected FakeIntegrationEvent()
             : base() { }
 
-        public FakeIntegrationEvent(Guid correlationId, Guid? executedBy, string value)
-            : base(correlationId, executedBy)
+        public FakeIntegrationEvent(string value)
+            : base()
         {
             Value = value;
         }

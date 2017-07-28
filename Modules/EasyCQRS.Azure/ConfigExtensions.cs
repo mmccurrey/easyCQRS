@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using EasyCQRS.Azure.Config;
+using Microsoft.AspNetCore.Http;
 
 namespace EasyCQRS
 {
@@ -25,10 +26,10 @@ namespace EasyCQRS
         public static IServiceCollection UseAzureForEasyCQRS(this IServiceCollection services)
         {
             return  services
+                            //.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                             .AddTransient<IConfigurationManager, DefaultConfigurationManager>()
                             .AddTransient<ICommandBus, TrackedCommandBus>()
                             .AddTransient<IIntegrationEventBus, ServiceBus>() 
-                            .AddTransient<IEventBus, ServiceBus>()
                             .AddTransient<IMessageSubscriber, ServiceBusMessageSubscriber>()
                             .AddTransient<IEventStore, EventStore>()
                             .AddTransient<ISagaStore, SagaStore>()

@@ -2,6 +2,7 @@
 using EasyCQRS.Diagnostics;
 using EasyCQRS.Messaging;
 using EasyCQRS.Tests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace EasyCQRS.Azure.Tests
 
                 var sut = new TrackedCommandBus(
                                             Mock.Of<IServiceProvider>(),
+                                            Mock.Of<IHttpContextAccessor>(),
                                             Mock.Of<IMessageSerializer>(),
                                             Mock.Of<ILogger>(),
                                             context);
@@ -45,6 +47,7 @@ namespace EasyCQRS.Azure.Tests
             {
                 var sut = new TrackedCommandBus(
                                          Mock.Of<IServiceProvider>(),
+                                         Mock.Of<IHttpContextAccessor>(),
                                          Mock.Of<IMessageSerializer>(),
                                          Mock.Of<ILogger>(),
                                          context);
@@ -55,11 +58,10 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var commandEntity = await context.Commands.FindAsync(command.CommandId);
+                var commandEntity = await context.Commands.FindAsync(command.MessageId);
 
                 Assert.NotNull(commandEntity);
-                Assert.Equal(command.CommandId, commandEntity.Id);
-                Assert.Equal(command.CorrelationId, commandEntity.CorrelationId);
+                Assert.Equal(command.MessageId, commandEntity.Id);
             }
         }
 
@@ -74,6 +76,7 @@ namespace EasyCQRS.Azure.Tests
                 var mockSerializer = new Mock<IMessageSerializer>();
                 var sut = new TrackedCommandBus(
                                          Mock.Of<IServiceProvider>(),
+                                         Mock.Of<IHttpContextAccessor>(),
                                          mockSerializer.Object,
                                          Mock.Of<ILogger>(),
                                          context);
@@ -100,6 +103,7 @@ namespace EasyCQRS.Azure.Tests
             {
                 var sut = new TrackedCommandBus(
                                          Mock.Of<IServiceProvider>(),
+                                         Mock.Of<IHttpContextAccessor>(),
                                          Mock.Of<IMessageSerializer>(),
                                          Mock.Of<ILogger>(),
                                          context);

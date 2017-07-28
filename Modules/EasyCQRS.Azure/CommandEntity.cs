@@ -11,9 +11,9 @@ namespace EasyCQRS.Azure
     [Table("Commands")]
     public class CommandEntity
     {        
-        public Guid Id { get; set; }
-        public Guid CorrelationId { get; set; }
-        public Guid? ExecutedBy { get; set; }
+        public string Id { get; set; }
+        public string CorrelationId { get; set; }
+        public string ExecutedBy { get; set; }
         public DateTimeOffset ScheduledAt { get; set; }
         public DateTimeOffset? ExecutedAt { get; set; }
         public string FullName { get; set; }

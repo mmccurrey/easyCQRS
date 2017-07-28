@@ -1,5 +1,6 @@
 ﻿using EasyCQRS.Diagnostics;
 using EasyCQRS.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
 using System;
@@ -10,52 +11,27 @@ using System.Threading.Tasks;
 
 namespace EasyCQRS.Azure.Messaging
 {
-    internal class ServiceBus : IEventBus, IIntegrationEventBus
+    internal class ServiceBus : IIntegrationEventBus
     {
         private readonly IMessageSerializer messageSerializer;
         private readonly ILogger logger;
-        private readonly IQueueClient queueClient;
         private readonly ITopicClient topicClient;
         private readonly InfrastructureContext db;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public ServiceBus(
             IMessageSerializer messageSerializer,
+            IHttpContextAccessor httpContextAccessor,
             IQueueClient queueClient,
             ITopicClient topicClient,
             ILogger logger,
             InfrastructureContext db)
         {
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
-            this.queueClient = queueClient ?? throw new ArgumentNullException("queueClient");
-            this.topicClient = topicClient ?? throw new ArgumentNullException("topicClient");
-            this.logger = logger ?? throw new ArgumentNullException("logger");
-            this.db = db ?? throw new ArgumentNullException("db");
-
-        }
-
-
-        public async Task PublishEventsAsync(params Event[] events)
-        {
-            if (events != null)
-            {
-                foreach (var @event in events)
-                {
-                    logger.Info("[ServiceBus->PublishEventsAsync] Sending event of type: {0}", @event.GetType().Name);
-
-                    var payload = messageSerializer.Serialize(@event);
-                    var brokeredMessage = new Microsoft.Azure.ServiceBus.Message(payload);
-
-                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
-                    brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
-                    brokeredMessage.UserProperties["FullName"] = @event.GetType().FullName;
-                    brokeredMessage.UserProperties["Namespace"] = @event.GetType().Namespace;
-                    brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
-                    brokeredMessage.UserProperties["Event"] = true;
-                    brokeredMessage.UserProperties["IntegrationEvent"] = false;
-
-                    await topicClient.SendAsync(brokeredMessage);
-                }
-            }
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(ServiceBus.httpContextAccessor));
+            this.topicClient = topicClient ?? throw new ArgumentNullException(nameof(topicClient));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         public async Task PublishEventsAsync(params IntegrationEvent[] events)
@@ -66,29 +42,28 @@ namespace EasyCQRS.Azure.Messaging
                 {
                     var entity = new IntegrationEventEntity
                     {
-                        Id = @event.EventId,
-                        CorrelationId = @event.CorrelationId,
-                        ExecutedBy = @event.ExecutedBy,
+                        Id = @event.MessageId,
+                        CorrelationId = httpContextAccessor.HttpContext?.TraceIdentifier,
+                        ExecutedBy = httpContextAccessor.HttpContext?.User.GetId(),
                         Type = @event.GetType().AssemblyQualifiedName,
                         FullName = @event.GetType().FullName,
-                        Date = @event.Timestamp
+                        Payload = messageSerializer.Serialize(@event),
+                        Date = DateTimeOffset.UtcNow
                     };
 
                     db.IntegrationEvents.Add(entity);
 
                     db.SaveChanges();
                     logger.Info("[ServiceBus->PublishEventsAsync] Sending integration event of type: {0}", @event.GetType().Name);
+                    
+                    var brokeredMessage = new Microsoft.Azure.ServiceBus.Message(entity.Payload);
 
-                    var payload = messageSerializer.Serialize(@event);
-                    var brokeredMessage = new Microsoft.Azure.ServiceBus.Message(payload);
-
-                    brokeredMessage.UserProperties["CorrelationId"] = @event.CorrelationId;
+                    brokeredMessage.UserProperties["CorrelationId"] = entity.CorrelationId;
                     brokeredMessage.UserProperties["Name"] = @event.GetType().Name;
                     brokeredMessage.UserProperties["FullName"] = @event.GetType().FullName;
                     brokeredMessage.UserProperties["Namespace"] = @event.GetType().Namespace;
                     brokeredMessage.UserProperties["Type"] = @event.GetType().AssemblyQualifiedName;
-                    brokeredMessage.UserProperties["Event"] = false;
-                    brokeredMessage.UserProperties["IntegrationEvent"] = true;
+                    brokeredMessage.UserProperties["EventType"] = "Integration";
 
                     await topicClient.SendAsync(brokeredMessage);
                 }

@@ -1,5 +1,6 @@
 ﻿using EasyCQRS.EventSourcing;
 using EasyCQRS.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,18 @@ namespace EasyCQRS.Azure.EventSourcing
 {
     internal class EventStore: IEventStore
     {
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMessageSerializer messageSerializer;
         private readonly InfrastructureContext db;
 
         public EventStore(
-            IMessageSerializer messageSerializer,
+            IHttpContextAccessor httpContextAccessor,
+            IMessageSerializer messageSerializer,            
             InfrastructureContext db)
         {
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
-            this.db = db ?? throw new ArgumentNullException("db");
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.db = db ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<IEnumerable<Event>> LoadAsync<T>(Guid sourceId) where T : AggregateRoot
@@ -97,13 +101,13 @@ namespace EasyCQRS.Azure.EventSourcing
             var entity = new EventEntity
             {
                 AggregateId = @event.AggregateId,
-                CorrelationId = @event.CorrelationId,                
+                CorrelationId = httpContextAccessor?.HttpContext?.TraceIdentifier,                
                 Version = @event.Version,
-                Date = @event.Timestamp,
+                Date = DateTimeOffset.UtcNow,
                 SourceType = aggregateTypeName,
                 Type = @event.GetType().AssemblyQualifiedName,
                 FullName = @event.GetType().FullName,
-                ExecutedBy = @event.ExecutedBy,
+                ExecutedBy = httpContextAccessor?.HttpContext?.User.GetId(),
                 Payload = messageSerializer.Serialize(@event)
             };
 

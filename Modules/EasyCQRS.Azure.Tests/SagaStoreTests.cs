@@ -270,9 +270,6 @@ namespace EasyCQRS.Azure.Tests
                 {
                     new FakeCommand
                     {
-                        CorrelationId = correlationId,
-                        ExecutedBy = null,
-                        PreviousCommandId = null
                     }
                 }
             };

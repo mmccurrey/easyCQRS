@@ -1,5 +1,6 @@
 ﻿using EasyCQRS.Diagnostics;
 using EasyCQRS.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,20 +15,23 @@ namespace EasyCQRS.Azure.Messaging
     internal class TrackedCommandBus: ICommandBus
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMessageSerializer messageSerializer;
         private readonly ILogger logger;
         private readonly InfrastructureContext db;
 
         public TrackedCommandBus(
             IServiceProvider serviceProvider,
+            IHttpContextAccessor httpContextAccessor,
             IMessageSerializer messageSerializer,
             ILogger logger,
             InfrastructureContext db)
         {
-            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException("serviceProvider");
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException("messageSerializer");
-            this.logger = logger ?? throw new ArgumentNullException("logger");
-            this.db = db ?? throw new ArgumentNullException("db");
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
 
         }
 
@@ -37,9 +41,9 @@ namespace EasyCQRS.Azure.Messaging
 
             var entity = new CommandEntity
             {
-                Id = command.CommandId,
-                CorrelationId = command.CorrelationId,
-                ExecutedBy = command.ExecutedBy,
+                Id = command.MessageId,
+                CorrelationId = httpContextAccessor.HttpContext?.TraceIdentifier,
+                ExecutedBy = httpContextAccessor.HttpContext?.User.GetId(),
                 Type = command.GetType().AssemblyQualifiedName,
                 FullName = command.GetType().FullName,
                 ScheduledAt = DateTimeOffset.UtcNow,

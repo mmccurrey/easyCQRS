@@ -2,6 +2,7 @@
 using EasyCQRS.EventSourcing;
 using EasyCQRS.Messaging;
 using EasyCQRS.Tests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -26,7 +27,7 @@ namespace EasyCQRS.Azure.Tests
             
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 Assert.IsAssignableFrom<IEventStore>(sut);
             }
@@ -39,9 +40,9 @@ namespace EasyCQRS.Azure.Tests
             
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
-                sut.Save(typeof(FakeAggregate), new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Fake Value"));
+                sut.Save(typeof(FakeAggregate), new FakeEvent(Guid.Empty, 1, "Fake Value"));
 
                 Assert.False(await context.Events.AnyAsync());
 
@@ -58,11 +59,11 @@ namespace EasyCQRS.Azure.Tests
         public async Task EventStore_EventEntityHasPropertiesWithCorrectValues()
         {
             var options = SetupContext();
-            var fakeEvent = new FakeEvent(Guid.NewGuid(), Guid.Empty, 1, null, "Fake Value");
+            var fakeEvent = new FakeEvent(Guid.Empty, 1, "Fake Value");
 
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 sut.Save(typeof(FakeAggregate), fakeEvent);
                 
@@ -74,8 +75,6 @@ namespace EasyCQRS.Azure.Tests
                 var eventEntity = context.Events.FirstOrDefault();
 
                 Assert.Equal(fakeEvent.AggregateId, eventEntity.AggregateId);
-                Assert.Equal(fakeEvent.CorrelationId, eventEntity.CorrelationId);
-                Assert.Equal(fakeEvent.Timestamp, eventEntity.Date);
                 Assert.Equal(fakeEvent.Version, eventEntity.Version);
                 Assert.Equal(typeof(FakeAggregate).FullName, eventEntity.SourceType);
                 Assert.Equal(typeof(FakeEvent).AssemblyQualifiedName, eventEntity.Type);
@@ -90,7 +89,7 @@ namespace EasyCQRS.Azure.Tests
             
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 var eventEntities = await sut.LoadAsync<FakeAggregate>(Aggregate1);
 
@@ -105,7 +104,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 var eventEntities = await sut.LoadAsync<FakeAggregate>(Aggregate1, 2);
 
@@ -120,7 +119,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 var eventEntities = await sut.LoadByMaxVersionAsync<FakeAggregate>(Aggregate1, 1);
 
@@ -135,7 +134,7 @@ namespace EasyCQRS.Azure.Tests
 
             using (var context = new InfrastructureContext(options))
             {
-                var sut = new EventStore(Mock.Of<IMessageSerializer>(), context);
+                var sut = new EventStore(Mock.Of<IHttpContextAccessor>(), Mock.Of<IMessageSerializer>(), context);
 
                 var eventEntities = await sut.LoadByMaxVersionAsync<FakeAggregate>(Aggregate1, 1, 3);
 
@@ -193,7 +192,7 @@ namespace EasyCQRS.Azure.Tests
         private EventEntity GenerateEventEntity(Guid aggregateId, long version)
         {
             var time = DateTimeOffset.UtcNow;
-            var correlationId = Guid.NewGuid();
+            var correlationId = Guid.NewGuid().ToString();
             var eventId = Guid.NewGuid();
             var json = $@"{{ 
                           ""EventId"": ""{eventId}"",
