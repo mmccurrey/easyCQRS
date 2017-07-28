@@ -1,23 +1,18 @@
 ﻿using EasyCQRS.Azure;
+using EasyCQRS.Azure.Config;
 using EasyCQRS.Azure.EventSourcing;
 using EasyCQRS.Azure.Messaging;
-using EasyCQRS.Diagnostics;
 using EasyCQRS.EventSourcing;
 using EasyCQRS.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using EasyCQRS.Azure.Config;
-using Microsoft.AspNetCore.Http;
 
 namespace EasyCQRS
 {
@@ -26,7 +21,7 @@ namespace EasyCQRS
         public static IServiceCollection UseAzureForEasyCQRS(this IServiceCollection services)
         {
             return  services
-                            //.AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                            .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                             .AddTransient<IConfigurationManager, DefaultConfigurationManager>()
                             .AddTransient<ICommandBus, TrackedCommandBus>()
                             .AddTransient<IIntegrationEventBus, ServiceBus>() 

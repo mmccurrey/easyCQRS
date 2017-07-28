@@ -28,7 +28,7 @@ namespace EasyCQRS.Azure.Messaging
             InfrastructureContext db)
         {
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
-            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(ServiceBus.httpContextAccessor));
+            this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             this.topicClient = topicClient ?? throw new ArgumentNullException(nameof(topicClient));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.db = db ?? throw new ArgumentNullException(nameof(db));
